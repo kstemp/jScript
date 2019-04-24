@@ -123,10 +123,10 @@ public:
 
 	Variable visit() {
 
-		for (size_t i = scopes.size() - 1; i >= 0; --i) {
-			
-			auto varit = scopes[i].variables.find(varName);
-			if (varit != scopes[i].variables.end()) {
+		for (auto it = scopes.rbegin(); it != scopes.rend(); ++it){
+
+			auto varit = it->variables.find(varName);
+			if (varit != it->variables.end()) {
 
 				//consoleWriteLn("VariableNode: found variable '" + varName + "' = " + std::to_string(it->second->Int()) + " in scope '" + s->name + "' (we are in scope '" + currentScope->name + "')", Color::Yellow);
 				var = &varit->second;
