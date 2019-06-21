@@ -19,6 +19,18 @@
 #include "Scope.h"
 
 struct Node;
+struct ValueNode;
+struct VariableNode;
+struct UnaryNode;
+struct BinOpNode;
+struct WhileNode;
+struct FunctionNode;
+struct FuncCallNode;
+struct VarAssignNode;
+struct VarDeclNode;
+struct ReturnNode;
+
+#include "Visitor.h"
 
 extern std::deque<Scope> scopes;
 
@@ -39,7 +51,7 @@ struct Node {
 
 		Node(){}
 
-		virtual Variable visit() = 0;
+		virtual void accept(Visitor* visitor) = 0;
 		
 		virtual ~Node(){}
 
@@ -56,16 +68,16 @@ struct ValueNode : public Node {
 
 private:
 
-	const Variable _value;
+
 
 public:
+
+	const Variable _value;
 
 	template<typename T>
 	ValueNode(const T val) : _value(val) {} 
 
-	Variable visit() { 
-		return _value;
-	}
+	void accept(Visitor* visitor);
 
 	~ValueNode() {}
 
@@ -82,18 +94,18 @@ struct UnaryNode : public Node {
 
 private:
 
+
+public:
+
+
 	Node* arg;
 
 	const std::function<Variable(const Variable&)> function;
 
-public:
-
 	UnaryNode(const std::function<Variable(const Variable&)> function, Node* arg)
 		: function(function), arg(arg) {}
 
-	Variable visit() {
-		return function(arg->visit());
-	}
+	void accept(Visitor* visitor);
 
 	~UnaryNode() {
 		delete arg;
@@ -112,38 +124,18 @@ struct VariableNode : Node {
 
 private:
 
+
+
+public:
+
 	const std::string varName;
 
 	Variable* var;
 
-public:
-
 	VariableNode(const std::string name)
 		: varName(name) {}
 
-	Variable visit() {
-
-		for (auto it = scopes.rbegin(); it != scopes.rend(); ++it){
-
-			auto varit = it->variables.find(varName);
-			if (varit != it->variables.end()) {
-
-				//consoleWriteLn("VariableNode: found variable '" + varName + "' = " + std::to_string(it->second->Int()) + " in scope '" + s->name + "' (we are in scope '" + currentScope->name + "')", Color::Yellow);
-				var = &varit->second;
-				return varit->second;
-
-			}		
-		}
-
-		// Variable was not found in any enclosing scope
-		throw Exception("variable '" + varName + "' does not exist", -69);
-
-	}
-
-	Variable* varPtr() {
-		visit();
-		return var;
-	}
+	void accept(Visitor* visitor);
 
 };
 
@@ -156,23 +148,19 @@ public:
 */
 struct BinOpNode : public Node {
 
-protected:
+public:
+
 
 	Node* arg1;
 	Node* arg2;
 
 	const std::function<Variable(const Variable&, const Variable&)> function;
 
-public:
-
 	BinOpNode(std::function<Variable(const Variable&, const Variable&)> function, Node* arg1, Node* arg2) 
 		: function(function), arg1(arg1), arg2(arg2) {}
 
-	Variable visit() {
 
-		return getVar(arg1->visit(), arg2->visit(), function);
-		//return function(arg1->visit(), arg2->visit());
-	}
+	void accept(Visitor* visitor);
 
 	~BinOpNode() {
 		delete arg1;
@@ -190,26 +178,15 @@ public:
 */
 struct VarAssignNode : Node{
 
-private:
+public:
 
 	Node* arg1;
 	Node* arg2;
 
-public:
 
 	VarAssignNode(Node* arg1, Node* arg2) : arg1(arg1), arg2(arg2) {}
 
-	Variable visit() {
-
-		Variable value = arg2->visit();
-
-		// we assign the evaluated node both to the Variable in question,
-		// and this node. This allows us to have c = a = 56, for instance.
-		*static_cast<VariableNode*>(arg1)->varPtr() = value;
-
-		return value;
-
-	}
+	void accept(Visitor* visitor);
 
 	~VarAssignNode() {
 		delete arg1;
@@ -228,30 +205,7 @@ struct WhileNode : Node {
 
 public:
 
-	Variable visit() {
-
-		while (true) {
-
-			if (!expr->visit().Int())
-				break;
-
-			scopes.push_back(Scope());
-
-			try {
-			
-				for (auto&jt : body)
-					jt->visit();
-
-			
-			} catch (Variable var) {
-				scopes.pop_back();
-				throw;
-			}	
-
-		}
-
-
-	}
+	void accept(Visitor* visitor);
 
 	~WhileNode() {
 		body.clear();
@@ -272,10 +226,12 @@ struct FunctionNode : Node{
 
 private:
 
-	const std::string name;
+
 
 
 public:
+
+	const std::string name;
 
 	//TODO there should be a way to lock parameters/body after the function was declared
 	std::vector<std::string> parameters;
@@ -284,15 +240,7 @@ public:
 
 	FunctionNode(const std::string name) : name(name) {}
 
-	Variable visit(){
-
-		//TODO maybe we should have a derived GlobalScope : Scope instead...?
-		if (scopes.back().name != "global")
-			throw Exception("functions may only be declared in top-level (i.e. global) scope");
-
-		methods[name] = this;
-
-	}
+	void accept(Visitor* visitor);
 
 	~FunctionNode(){
 		
@@ -311,33 +259,7 @@ struct FuncCallNode : Node {
 
 	FuncCallNode(const std::string name) : name(name) {}
 
-	Variable visit() {
-
-		auto it = methods.find(name);
-
-		if (it == methods.end())
-			throw Exception("method '" + name + "' does not exist", -69);
-
-		if (it->second->parameters.size() != arguments.size())
-			throw Exception("invalid number: " + std::to_string(arguments.size()) + " of arguments for function '" + name + "' (expected " + std::to_string(it->second->parameters.size()) + ")", - 69);
-
-		scopes.push_back(Scope(it->first));
-		
-		for (size_t i = 0; i < arguments.size(); ++i) 			
-			scopes.back().variables[it->second->parameters[i]] = arguments[i]->visit();
-
-		try {
-
-			for (auto&jt : it->second->body)
-				jt->visit();
-					
-		} catch (Variable var) {
-			scopes.pop_back();
-			return var;
-		}
-
-
-	}
+	void accept(Visitor* visitor);
 
 };
 
@@ -355,17 +277,15 @@ struct ReturnNode : Node {
 
 private:
 
-	Node* expr;
 
 public:
 
+
+	Node* expr;
+
 	ReturnNode(Node* expr) : expr(expr) {}
 
-	Variable visit() {
-
-		throw expr->visit();
-
-	}
+	void accept(Visitor* visitor);
 
 };
 
@@ -383,24 +303,16 @@ struct VarDeclNode : Node {
 
 private:
 
+public:
+
+
 	const std::string varName;
 	Node* valueExpr;
 
-public:
 
 	VarDeclNode(const std::string varName, Node* valueExpr = nullptr)
 		: varName(varName), valueExpr(valueExpr) {}
 
-	Variable visit() {
-
-		if (scopes.back().variables.count(varName))
-			throw Exception("variable '" + varName + "' has already been declared in this scope");
-
-		if (valueExpr != nullptr)
-			scopes.back().variables[varName] = valueExpr->visit();
-		else 
-			scopes.back().variables[varName] = Variable();
-		
-	}
+	void accept(Visitor* visitor);
 
 };

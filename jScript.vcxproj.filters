@@ -45,6 +45,7 @@
     <ClInclude Include="src\Interpreter.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Visitor.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">
@@ -73,5 +74,7 @@
     <ClCompile Include="src\Variable.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Visitor.cpp" />
+    <ClCompile Include="src\Node.cpp" />
   </ItemGroup>
 </Project>

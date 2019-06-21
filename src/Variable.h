@@ -13,6 +13,8 @@
 
 #pragma once
 
+#include <iostream>
+
 #include "Exception.h"
 
 enum class VarType {
@@ -39,6 +41,7 @@ private:
 	VarType _type;
 
 public:
+
 
 	double Double() const {
 		
@@ -69,11 +72,15 @@ public:
 
 	//	Default constructor. Assigns no numeric value and 
 	//	sets type as Undefined
-	Variable() : _type(VarType::Undefined) {}
+	Variable() : _type(VarType::Undefined) {
+		std::cout << "VARIABLE created VOID\n";
+	
+	}
 
 	//	Initializes Variable to a double value
 	Variable(const double& val) : _type(VarType::Double) {
 		_data.Double = val;
+		std::cout << "VARIABLE created DOUBLE\n";
 	}
 
 	//	Copy constructor
@@ -82,6 +89,7 @@ public:
 	//	Initializes Variable to an integer value
 	Variable(const int& val) : _type(VarType::Int) {
 		_data.Int = val;
+		std::cout << "VARIABLE created INT\n";
 	}
 
 	// Copy-assignment constructor
@@ -137,6 +145,8 @@ public:
 	}
 
 	~Variable() {
+
+		std::cout << "VARIABLE DESTROYED!\n";
 		// DEBUG PURPOSES
 	}
 

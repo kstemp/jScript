@@ -44,15 +44,21 @@ public:
 
 		reset();
 
+		Visitor* visitor = new Visitor;
+
+			//TODO destructor
+
 		try {
 			
 			for (auto& it : program) {
+
+				it->accept(visitor);
 				
-				Variable result = it->visit();
+				//Variable result = it->visit();
 				
 				if (printNumericalResults)
-					if (result.type() != VarType::Undefined)
-						_out << result << "\n";
+					if (visitor->result.type() != VarType::Undefined)
+						_out << visitor->result << "\n";
 				
 			}
 
