@@ -1,3 +1,14 @@
+/*
+
+	jScript
+	copyright (C) 2019 K. Stempinski
+
+	@filename:		Visitor.h
+	@description:	definition of Visitor class, which is reponsible for traversing the AST 
+					and evaluating its nodes appropriately.
+
+*/
+
 #pragma once
 
 class Visitor;
@@ -29,6 +40,5 @@ public:
 	void visitReturnNode(ReturnNode& returnNode);
 
 	void visitVarDeclNode(VarDeclNode& varDeclNode);
-
 
 };

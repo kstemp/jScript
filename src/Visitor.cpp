@@ -1,3 +1,13 @@
+/*
+
+	jScript
+	copyright (C) 2019 K. Stempinski
+
+	@filename:		Visitor.cpp
+	@description:	Visitor pattern implementation.
+
+*/
+
 #include "Visitor.h"
 
 

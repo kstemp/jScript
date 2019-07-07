@@ -56,6 +56,7 @@ struct Parser {
 				
 				lexer.eat(";");
 				return expr;
+
 			} catch (Exception& e) // TODO exceptions
 			{
 
@@ -159,7 +160,7 @@ struct Parser {
 			if (isalpha(lexer.current()))
 				return  parseVariableOrFunction();
 	
-			else
+			
 				throw Exception("failed to parse expression", lexer.gpos());
 
 			
