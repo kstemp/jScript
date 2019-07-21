@@ -57,7 +57,7 @@ public:
 				//Variable result = it->visit();
 				
 				if (printNumericalResults)
-					if (visitor->result.type() != VarType::Undefined)
+					if (!visitor->result.isUndefined())
 						_out << visitor->result << "\n";
 				
 			}

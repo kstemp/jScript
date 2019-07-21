@@ -76,7 +76,7 @@ void Visitor::visitWhileNode(WhileNode& whileNode) {
 
 		whileNode.expr->accept(this);
 
-		if (!result.Int())
+		if (!result.getData<int>())
 			break;
 
 		scopes.push_back(Scope());

@@ -148,7 +148,6 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\Operator.cpp" />
-    <ClCompile Include="src\Variable.cpp" />
     <ClCompile Include="src\Visitor.cpp" />
   </ItemGroup>
   <ItemGroup>
