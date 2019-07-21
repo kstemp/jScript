@@ -131,10 +131,10 @@ void Visitor::visitFuncCallNode(FuncCallNode& funcCallNode) {
 
 	}
 	catch (Variable var) {
-		scopes.pop_back();
 		result = var;
 	}
 
+	scopes.pop_back();
 
 }
 
