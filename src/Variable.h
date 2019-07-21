@@ -4,10 +4,8 @@
 	copyright (C) 2019 K. Stempinski
 
 	@filename:		Variable.h
-	@description:	Implements a dynamic type Variable, which can store double or int values
-					(or be undefined). Variable is promoted according to the simple rule
-					that if any of the operands is of type Double, everything else gets promoted to Double.
-					However, if any of the operands is Undefined, an exception is thrown.
+	@summary:		Implements a dynamic type Variable, which can store double or int values
+					(or be undefined). Type promotion is inherited from C++ (see getVar).
 
 */
 #pragma once
@@ -105,11 +103,11 @@ struct Variable {
 
 		return std::visit(
 			OverloadedVisitor{
-				[&](const auto& val) -> std::ostream & {
+				[&](const auto& val) -> std::ostream& {
 					out << "[" << typeid(val).name() << "] " << val;
 					return out;
 				},
-				[&](const std::monostate) -> std::ostream & {
+				[&](const std::monostate) -> std::ostream& {
 					out << "[undefined]";
 					return out;
 				}
