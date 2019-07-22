@@ -305,7 +305,6 @@ private:
 
 public:
 
-
 	const std::string varName;
 	Node* valueExpr;
 

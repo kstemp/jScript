@@ -55,16 +55,16 @@ struct Variable {
 
 	}
 
+	// data is set to std::monostate, since Variable is of "undefined" type
+	Variable() {
+		std::cout << "VARIABLE created VOID\n";
+	}
+
 	//TODO assert that T is numeric, or something like that
 	template<typename T>
 	Variable(const T& val) : data(val) {
 		//TODO debug only
 		std::cout << "Variable created: " << typeid(T).name() << "\n";
-	}
-
-	// data is set to std::monostate, since Variable is of "undefined" type
-	Variable() {
-		std::cout << "VARIABLE created VOID\n";
 	}
 
 	Variable(const Variable& var) : data(var.data) {}
@@ -76,24 +76,24 @@ struct Variable {
 
 	}
 
-	//TODO check if this really works? ==0 looks kinda dodgy
-	const bool isZero() const {
-
-		return std::visit(
-			OverloadedVisitor{
-				[](const auto& val) -> bool { return val == 0; },
-				[](const std::monostate) -> bool { throw Exception("variable is undefined (thrown by IsZero)"); }
-			},
-			data);
-
-	}
-
 	Variable operator - () {
 
 		return std::visit(
 			OverloadedVisitor{
 				[](const auto& val) -> Variable { return Variable(-val); },
 				[](const std::monostate) -> Variable { throw Exception("undefined argument to unary - operator"); }
+			},
+			data);
+
+	}
+
+	//TODO check if this really works? "val == 0" looks kinda dodgy
+	const bool isZero() const {
+
+		return std::visit(
+			OverloadedVisitor{
+				[](const auto& val) -> bool { return val == 0; },
+				[](const std::monostate) -> bool { throw Exception("variable is undefined (thrown by IsZero)"); }
 			},
 			data);
 
