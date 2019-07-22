@@ -21,6 +21,7 @@ struct Parser {
 
 	void parse(std::vector<Node*>& program) {
 
+		//TODO we shoud not be using eof here
 		while (!lexer.eof())
 			program.push_back(getBlock());
 
@@ -161,7 +162,7 @@ struct Parser {
 				return  parseVariableOrFunction();
 	
 			
-				throw Exception("failed to parse expression", lexer.gpos());
+			throw Exception("failed to parse expression", lexer.gpos());
 
 			
 		}

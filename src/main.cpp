@@ -15,7 +15,6 @@
 
 #include "Console.h"
 #include "Exception.h"
-#include "Version.h"
 
 #include "Interpreter.h"
 

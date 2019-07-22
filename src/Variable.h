@@ -81,7 +81,7 @@ struct Variable {
 		return std::visit(
 			OverloadedVisitor{
 				[](const auto& val) -> Variable { return Variable(-val); },
-				[](const std::monostate) -> Variable { throw Exception("undefined argument to unary - operator"); }
+				[](const std::monostate) -> Variable { throw Exception("undefined argument to unary '-' operator"); }
 			},
 			data);
 
