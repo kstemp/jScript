@@ -66,10 +66,6 @@ struct Node {
 */
 struct ValueNode : public Node {
 
-private:
-
-
-
 public:
 
 	const Variable _value;
