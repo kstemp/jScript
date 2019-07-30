@@ -38,7 +38,7 @@ struct Variable {
 	}
 
 	template<typename T>
-	const T getData() const {
+	T getData() const {
 
 		// static cast to the same type CAN introduce some overhead, so first check whether we hold T,
 		// (it's just faster than doing static_Cast to T from T)
@@ -57,14 +57,14 @@ struct Variable {
 
 	// data is set to std::monostate, since Variable is of "undefined" type
 	Variable() {
-		std::cout << "VARIABLE created VOID\n";
+	//	std::cout << "VARIABLE created VOID\n";
 	}
 
 	//TODO assert that T is numeric, or something like that
 	template<typename T>
 	Variable(const T& val) : data(val) {
 		//TODO debug only
-		std::cout << "Variable created: " << typeid(T).name() << "\n";
+	//	std::cout << "Variable created: " << typeid(T).name() << "\n";
 	}
 
 	Variable(const Variable& var) : data(var.data) {}
@@ -117,7 +117,7 @@ struct Variable {
 	}
 
 	~Variable() {
-		std::cout << "Destroyed variable of type TODO\n";
+	//	std::cout << "Destroyed variable of type TODO\n";
 	}
 
 };
