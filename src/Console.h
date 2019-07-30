@@ -11,29 +11,29 @@
 
 #include <iostream>
 
-// this is the easiest way to emulate Color::red, as if we had an enum
-// TODO find something better
-namespace Colors {
-	const std::string red = "\033[0;31m";
-	const std::string yellow = "\033[0;93m";
-	const std::string blue = "\033[0;94m";
-	const std::string reset = "\033[0m"; // color...?
-}
+enum Color {
+	white = 0, //TODO actually this is default color, I think?
+	red = 31,
+	yellow = 93,
+	blue = 94
+};
 
 class Console {
 
 public:
 
-	static void write(const std::string& text, const std::string& color = ""){
-		std::cout << color << text << Colors::reset;
+	inline static const std::string reset = "\033[0";
+
+	static void write(const std::string& text, const Color color = Color::white){
+		std::cout << "\033[0;" << color << "m" << text << reset;
 	}
 
-	static void writeLn(const std::string& text, const std::string& color = ""){
+	static void writeLn(const std::string& text, const Color color = Color::white){
 		write(text + "\n", color);
 	}
 
-	static void debug(const std::string& text, const std::string& color = ""){
-		write("[DEBUG] ", Colors::yellow);
+	static void debug(const std::string& text){
+		write("[DEBUG] ", Color::yellow);
 		writeLn(text);
 	}
 

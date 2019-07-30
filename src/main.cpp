@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
 	// no input files
 	if (argc == 1) {
 
-		Console::writeLn("Error: no input file specified", Colors::red);
+		Console::writeLn("Error: no input file specified", Color::red);
 		return 1;
 
 	}
@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
 	
 	} catch (const Exception& e) {
 
-		Console::writeLn("Parser exception at position " + std::to_string(e.pos()) + ": " + std::string(e.what()), Colors::red);
+		Console::writeLn("Parser exception at position " + std::to_string(e.pos()) + ": " + std::string(e.what()), Color::red);
 
 		size_t pos1 = input.find_last_of('\n', e.pos());
 		size_t pos2 = input.find_first_of('\n', e.pos());
@@ -89,7 +89,7 @@ int main(int argc, char* argv[]) {
 	
 	} catch (const Exception& e) {
 
-		Console::writeLn("Error: " + std::string(e.what()), Colors::red);
+		Console::writeLn("Error: " + std::string(e.what()), Color::red);
 		return 1;
 
 	}
