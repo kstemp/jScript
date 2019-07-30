@@ -6,12 +6,15 @@
 struct Test1 : Test {
 
 	std::string describe() override {
-		return "provides test1";
+		return "invalid grouping leads in a non-assignable node";
 	}
 
-	static const int test = 1;
-	void run() override {
-		std::cout << "running " << test;
+	bool run() override {
+		return true;
+	}
+
+	void initialize() override{
+		
 	}
 
 };
@@ -19,12 +22,15 @@ struct Test1 : Test {
 struct Test2 : Test {
 
 	std::string describe() override {
-		return "provides test 222222";
+		return "another test";
 	}
 
-	static const int test = 2;
-	void run() override {
-		std::cout << "running " << test;
+	bool run() override {
+		return true;
+	}
+
+	void initialize() override {
+
 	}
 
 };

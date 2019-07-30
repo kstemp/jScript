@@ -17,6 +17,7 @@ enum Color {
 	white = 0,
 	//TODO actually this is default color, I think?
 	red = 31,
+	green = 92,
 	yellow = 93,
 	blue = 94
 };
