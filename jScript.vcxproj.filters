@@ -45,6 +45,7 @@
     <ClInclude Include="src\Visitor.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Config.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">

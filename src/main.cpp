@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
 	// no input files
 	if (argc == 1) {
 
-		consoleWriteLn("Error: no input file specified", Color::Red);
+		Console::writeLn("Error: no input file specified", Colors::red);
 		return 1;
 
 	}
@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 
 	} catch (const std::ifstream::failure& e) {
 
-		consoleWriteLn("Error: file '" + std::string(argv[1]) + "' cannot be opened (" + e.what() + ")");
+		Console::writeLn("Error: file '" + std::string(argv[1]) + "' cannot be opened (" + e.what() + ")");
 		return 1;
 
 	}
@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
 	
 	} catch (const Exception& e) {
 
-		consoleWriteLn("Parser exception at position " + std::to_string(e.pos()) + ": " + std::string(e.what()), Color::Red);
+		Console::writeLn("Parser exception at position " + std::to_string(e.pos()) + ": " + std::string(e.what()), Colors::red);
 
 		size_t pos1 = input.find_last_of('\n', e.pos());
 		size_t pos2 = input.find_first_of('\n', e.pos());
@@ -71,13 +71,13 @@ int main(int argc, char* argv[]) {
 		if (pos2 == std::string::npos)
 			pos2 = input.length();
 
-		consoleWriteLn(input.substr(pos1, pos2 - pos1));
+		Console::writeLn(input.substr(pos1, pos2 - pos1));
 
 		std::string p = "";
 		for (size_t i = pos1; i < e.pos() - 1; i++)
 			p += (input[i] == '\t' ? '\t' : ' ');
 
-		consoleWriteLn(p + "^");
+		Console::writeLn(p + "^");
 
 		return 1;
 
@@ -89,7 +89,7 @@ int main(int argc, char* argv[]) {
 	
 	} catch (const Exception& e) {
 
-		consoleWriteLn("Error: " + std::string(e.what()), Color::Red);
+		Console::writeLn("Error: " + std::string(e.what()), Colors::red);
 		return 1;
 
 	}

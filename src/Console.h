@@ -9,34 +9,32 @@
 */
 #pragma once
 
-#define WIN32_LEAN_AND_MEAN
-#define NOMINMAX
-#include <windows.h>
+#include <iostream>
 
-enum Color {
+// this is the easiest way to emulate Color::red, as if we had an enum
+// TODO find something better
+namespace Colors {
+	const std::string red = "\033[0;31m";
+	const std::string yellow = "\033[0;93m";
+	const std::string blue = "\033[0;94m";
+	const std::string reset = "\033[0m"; // color...?
+}
 
-	Red		= FOREGROUND_RED,
-	Blue	= FOREGROUND_BLUE,
-	Green	= FOREGROUND_GREEN,
-	White	= FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN,
-	Yello	= FOREGROUND_RED | FOREGROUND_GREEN
+class Console {
+
+public:
+
+	static void write(const std::string& text, const std::string& color = ""){
+		std::cout << color << text << Colors::reset;
+	}
+
+	static void writeLn(const std::string& text, const std::string& color = ""){
+		write(text + "\n", color);
+	}
+
+	static void debug(const std::string& text, const std::string& color = ""){
+		write("[DEBUG] ", Colors::yellow);
+		writeLn(text);
+	}
 
 };
-
-void setTextColor(const Color color) {
-
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
-	SetConsoleTextAttribute(hConsole, color);
-
-}
-
-void consoleWriteLn(const std::string& text, const Color color = Color::White) {
-
-	setTextColor(color);
-	std::cout << text << "\n";
-	setTextColor(Color::White);
-
-}
-
-

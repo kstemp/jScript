@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\Console.h" />
     <ClInclude Include="src\Exception.h" />
     <ClInclude Include="src\Interpreter.h" />

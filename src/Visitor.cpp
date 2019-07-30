@@ -27,7 +27,7 @@ void Visitor::visitVariableNode(VariableNode& variableNode){
 		auto varit = it->variables.find(variableNode.varName);
 		if (varit != it->variables.end()){
 
-			//consoleWriteLn("VariableNode: found variable '" + varName + "' = " + std::to_string(it->second->Int()) + " in scope '" + s->name + "' (we are in scope '" + currentScope->name + "')", Color::Yellow);
+			//Console::writeLn("VariableNode: found variable '" + varName + "' = " + std::to_string(it->second->Int()) + " in scope '" + s->name + "' (we are in scope '" + currentScope->name + "')", Color::Yellow);
 			variableNode.var = &varit->second;
 			result = varit->second;
 
