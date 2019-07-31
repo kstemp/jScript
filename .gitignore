@@ -360,3 +360,7 @@ healthchecksdb
 
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
+
+# jScript specific
+x64/
+bin/
