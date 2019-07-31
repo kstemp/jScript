@@ -13,17 +13,17 @@ const std::string CMD_LINE_ARGS_MSG = "Command line arguments: test-runner [file
 
 struct Test1 : Test {
 
+	void init() override {
+		scriptFile = "variable/test.j";
+	}
+
 	std::string describe() override {
 		return "is true";
 	}
 
 	bool run() override {
-		Assert_AreEqual(2, 3);
+		Assert_AreEqual(2+2, 4);
 		//Assert_AreEqual(5, 5);
-	}
-
-	void initialize() override{
-		
 	}
 
 };
@@ -35,11 +35,10 @@ struct Test2 : Test {
 	}
 
 	bool run() override {
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-		return true;
+		Assert_IsTrue(false);
 	}
 
-	void initialize() override {
+	void init() override {
 
 	}
 

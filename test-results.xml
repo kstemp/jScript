@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="jScript tests" tests="3" errors="0" failures="1" skip="0">
+    <testcase classname="path1" name="test_1" time="0">
+        <failure type="TypeError" message="error msg1">
+        </failure>
+    </testcase>
+    <testcase classname="path2" name="test_2" time="0">
+    </testcase>
+    <testcase classname="path3" name="test_3" time="0">
+    </testcase>
+</testsuite>

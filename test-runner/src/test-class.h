@@ -6,15 +6,19 @@
 
 struct Test {
 
+	std::string scriptFile = "";
+
 	virtual std::string describe() = 0;
+
+	virtual void init() = 0;
+
 	virtual bool run() = 0;
-	virtual void initialize() = 0;
 
-	void exec(int& countPass){
+	virtual void exec(int& countPass) final {
 
-		initialize();
+		init();
 
-		Console::writeLn("[      ] " + describe());
+		Console::writeLn("[      ] " + describe() + " (file '" + scriptFile + "')");
 
 		const bool pass = run();
 		countPass += pass;

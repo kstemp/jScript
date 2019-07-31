@@ -7,15 +7,16 @@
 	@description:
 
 */
+/*
+TODO
+* cross-platform compatibility - should use ASCII escape seqs on Linux and SetConsoleHandle/whatever on Windows
+ */
 #pragma once
-
-#include <iostream>
-#include <map>
 
 #include "Config.h"
 
-const std::string reset = "\033[0m";
-const std::string open = "\033[";
+#include <iostream>
+#include <map>
 
 enum Color {
 	white = 0,
@@ -25,13 +26,16 @@ enum Color {
 	blue = 4
 };
 
-const std::array<std::string, 5> colorStrings = {"", open + "31m", open + "92m", open + "93m", open + "94m"};
+static const std::string reset = "\033[0m";
+static const std::string open = "\033[";
+
+static const std::array<std::string, 5> colorStrings = {"", open + "31m", open + "92m", open + "93m", open + "94m"};
 
 class Console {
 
 public:
 
-	static void write(const std::string& text, const Color color = Color::white){
+	static inline void write(const std::string& text, const Color color = Color::white){
 #ifdef NO_CONSOLE_COLORS
 		std::cout << text;
 #else
