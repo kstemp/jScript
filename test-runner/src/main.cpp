@@ -3,6 +3,11 @@
 
 #include "test-class.h"
 
+#include <chrono>
+#include <thread>
+
+const std::string SPLASH_MESSAGE = "\njScript test-runner utility v.0.1\ncopyright (C) 2019 by K. Stempinski\n\n";
+
 struct Test1 : Test {
 
 	std::string describe() override {
@@ -10,6 +15,7 @@ struct Test1 : Test {
 	}
 
 	bool run() override {
+		
 		return true;
 	}
 
@@ -26,6 +32,7 @@ struct Test2 : Test {
 	}
 
 	bool run() override {
+		std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 		return true;
 	}
 
@@ -37,11 +44,11 @@ struct Test2 : Test {
 
 int main(){
 
+	std::cout << SPLASH_MESSAGE;
+
 	TestRunner<
 		Test1,
 		Test2
 	>{}.execute();
-	
-	getchar();
 
 }

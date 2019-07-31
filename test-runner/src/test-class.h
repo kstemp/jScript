@@ -14,15 +14,14 @@ struct Test {
 
 		initialize();
 
-		std::cout << "[      ] " << describe();
+		std::cout << "[      ] " << describe() << "\n";
+		std::cout << "\033[F";
 
-
-
-		const bool pass = run();
-
-
+		bool pass;
+		pass = run();
 
 		//TODO refactor
+
 		countPass += pass;
 		const std::string msg = pass ? "PASS" : "FAIL";
 		const int color = pass ? Color::green : Color::red;
@@ -43,7 +42,7 @@ struct TestRunner : Ts... {
 
 		( Ts::exec(countPass), ...);
 
-		std::cout << "\nExecuted " << count << " tests, of which " << countPass << " passed and " << count - countPass << " failed.\n";
+		std::cout << "\nExecuted " << count << " tests, of which " << countPass << " passed and " << count - countPass << " failed.\n\n";
 	}
 
 };
