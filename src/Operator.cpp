@@ -12,17 +12,17 @@ Node* getOperatorNode(Node* arg1, Node* arg2, const OperatorType op) {
 
 	}
 	case OperatorType::Equal:
-		return new BinOpNode(std::equal_to(), arg1, arg2);
+		return new BinOpNode(std::equal_to<>(), arg1, arg2);
 	case OperatorType::Smaller:
-		return new BinOpNode(std::less(), arg1, arg2);
+		return new BinOpNode(std::less<>(), arg1, arg2);
 	case OperatorType::Greater:
-		return new BinOpNode(std::greater(), arg1, arg2);
+		return new BinOpNode(std::greater<>(), arg1, arg2);
 	case OperatorType::Add:
-		return new BinOpNode(std::plus(), arg1, arg2);
+		return new BinOpNode(std::plus<>(), arg1, arg2);
 	case OperatorType::Subtract:
-		return new BinOpNode(std::minus(), arg1, arg2);
+		return new BinOpNode(std::minus<>(), arg1, arg2);
 	case OperatorType::Multiply:
-		return new BinOpNode(std::multiplies(), arg1, arg2);
+		return new BinOpNode(std::multiplies<>(), arg1, arg2);
 	case OperatorType::Divide:
 		return new BinOpNode([](Variable a1, Variable a2){
 
