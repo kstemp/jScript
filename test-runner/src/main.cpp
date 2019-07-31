@@ -9,15 +9,17 @@
 const std::string SPLASH_MSG = "\njScript test-runner utility v.0.1\ncopyright (C) 2019 by K. Stempinski\n\n";
 const std::string CMD_LINE_ARGS_MSG = "Command line arguments: test-runner [fileName.xml]\n\n"; 
 
+#include "assert.h"
+
 struct Test1 : Test {
 
 	std::string describe() override {
-		return "invalid grouping results in a non-assignable node";
+		return "is true";
 	}
 
 	bool run() override {
-		
-		return true;
+//		Assert_AreEqual(2, 3);
+		Assert_AreEqual(5, 5);
 	}
 
 	void initialize() override{
@@ -50,7 +52,7 @@ int main(int argc, char** argv){
 	if (argc == 1)
 		std::cout << CMD_LINE_ARGS_MSG;
 
-	TestRunner<
+	TestSuite<
 		Test1,
 		Test2
 	>{}.execute();

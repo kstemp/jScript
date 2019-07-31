@@ -29,7 +29,7 @@ struct Test {
 };
 
 template<class... Ts>
-struct TestRunner : Ts... {
+struct TestSuite : Ts... {
 
 	void execute() {
 
@@ -39,6 +39,7 @@ struct TestRunner : Ts... {
 		( Ts::exec(countPass), ...);
 
 		std::cout << "\nExecuted " << count << " tests, of which " << countPass << " passed and " << count - countPass << " failed.\n\n";
+		
 	}
 
 };
