@@ -2,6 +2,10 @@
 code.j
 other_code.j
 
+#binaries
+bin/
+testrunner/bin/
+
 #CMake-specific
 CMakeLists.txt.user
 CMakeCache.txt
