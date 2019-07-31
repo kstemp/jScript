@@ -28,6 +28,12 @@ struct Test {
 		Console::write("[ ");
 		Console::writeLn(pass ? "PASS" : "FAIL", pass ? Color::green : Color::red);
 
+		saveToJSON();
+
+	}
+
+	virtual void saveToJSON() final {
+		
 	}
 
 };
