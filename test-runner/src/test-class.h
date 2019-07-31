@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../src/Console.h"
-
 #include <string>
+
+#include "../../src/Console.h"
 
 struct Test {
 
@@ -14,19 +14,15 @@ struct Test {
 
 		initialize();
 
-		std::cout << "[      ] " << describe() << "\n";
-		std::cout << "\033[F";
+		Console::writeLn("[      ] " + describe());
+		Console::lineUp();
 
-		bool pass;
-		pass = run();
-
-		//TODO refactor
-
+		const bool pass = run();
 		countPass += pass;
-		const std::string msg = pass ? "PASS" : "FAIL";
-		const int color = pass ? Color::green : Color::red;
 
-		std::cout << '\r' << "[ " << "\033[0;" << color << "m" << msg << "\033[0;" << Color::white << "m\n";
+		Console::lineStart();
+		Console::write("[ ");
+		Console::writeLn(pass ? "PASS" : "FAIL", pass ? Color::green : Color::red);
 
 	}
 

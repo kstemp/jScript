@@ -6,7 +6,8 @@
 #include <chrono>
 #include <thread>
 
-const std::string SPLASH_MESSAGE = "\njScript test-runner utility v.0.1\ncopyright (C) 2019 by K. Stempinski\n\n";
+const std::string SPLASH_MSG = "\njScript test-runner utility v.0.1\ncopyright (C) 2019 by K. Stempinski\n\n";
+const std::string CMD_LINE_ARGS_MSG = "Command line arguments: /test-runner [-XML fileName.xml]\n\n"; 
 
 struct Test1 : Test {
 
@@ -32,7 +33,7 @@ struct Test2 : Test {
 	}
 
 	bool run() override {
-		std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 		return true;
 	}
 
@@ -42,9 +43,12 @@ struct Test2 : Test {
 
 };
 
-int main(){
+int main(int argc, char** argv){
 
-	std::cout << SPLASH_MESSAGE;
+	std::cout << SPLASH_MSG;
+
+	if (argc == 1)
+		std::cout << CMD_LINE_ARGS_MSG;
 
 	TestRunner<
 		Test1,

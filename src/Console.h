@@ -10,29 +10,32 @@
 #pragma once
 
 #include <iostream>
+#include <map>
 
 #include "Config.h"
 
+const std::string reset = "\033[0m";
+const std::string open = "\033[";
+
 enum Color {
 	white = 0,
-	//TODO actually this is default color, I think?
-	red = 31,
-	green = 92,
-	yellow = 93,
-	blue = 94
+	red = 1,
+	green = 2,
+	yellow = 3,
+	blue = 4
 };
+
+const std::array<std::string, 5> colorStrings = {"", open + "31m", open + "92m", open + "93m", open + "94m"};
 
 class Console {
 
 public:
 
-	inline static const std::string reset = "\033[0";
-
 	static void write(const std::string& text, const Color color = Color::white){
 #ifdef NO_CONSOLE_COLORS
 		std::cout << text;
 #else
-		std::cout << "\033[0;" << color << "m" << text << reset;
+		std::cout << colorStrings[color] << text << reset;
 #endif
 	}
 
@@ -41,8 +44,16 @@ public:
 	}
 
 	static void debug(const std::string& text){
-		write("[DEBUG] ", Color::yellow);
+		write("[DEBUG] ",  Color::yellow);
 		writeLn(text);
+	}
+
+	static void lineUp(){
+		std::cout << "\033[F";
+	}
+
+	static void lineStart(){
+		std::cout << "\r";
 	}
 
 };

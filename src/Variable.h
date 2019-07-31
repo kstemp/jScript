@@ -107,7 +107,7 @@ struct Variable {
 		return std::visit(
 			OverloadedVisitor{
 				[](const auto& val) -> bool {
-					return val == 0;
+					return val == decltype(val)(0);
 				},
 				[](const std::monostate) -> bool {
 					throw Exception("variable is undefined (thrown by IsZero)");
