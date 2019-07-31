@@ -7,7 +7,7 @@
 #include <thread>
 
 const std::string SPLASH_MSG = "\njScript test-runner utility v.0.1\ncopyright (C) 2019 by K. Stempinski\n\n";
-const std::string CMD_LINE_ARGS_MSG = "Command line arguments: /test-runner [-XML fileName.xml]\n\n"; 
+const std::string CMD_LINE_ARGS_MSG = "Command line arguments: test-runner [fileName.xml]\n\n"; 
 
 struct Test1 : Test {
 
