@@ -43,11 +43,6 @@ public:
 		write(text + "\n", color);
 	}
 
-	static void debug(const std::string& text){
-		write("[DEBUG] ",  Color::yellow);
-		writeLn(text);
-	}
-
 	static void lineUp(){
 		std::cout << "\033[F";
 	}
@@ -56,4 +51,9 @@ public:
 		std::cout << "\r";
 	}
 
+	static void writeInfoLn(const std::string text, const std::string& infoText, Color infoTextColor = Color::white){
+		write("[ ");
+		write(infoText, infoTextColor);
+		write(" ] " + text + "\n");
+	}
 };

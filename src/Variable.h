@@ -65,7 +65,7 @@ struct Variable {
 	// data is set to std::monostate, since Variable is of "undefined" type
 	Variable(){
 #ifdef DEBUG
-		Console::debug("created variable [undefined]");
+		Console::writeInfoLn("created variable [undefined]", "DEBUG", Color::yellow);
 #endif
 	}
 
@@ -73,7 +73,7 @@ struct Variable {
 	template <typename T>
 	Variable(const T& val) : data(val){
 #ifdef DEBUG
-		Console::debug("created variable [TODO]");
+		Console::writeInfoLn("created variable [TODO]", "DEBUG", Color::yellow);
 #endif
 	}
 
@@ -136,7 +136,7 @@ struct Variable {
 
 	~Variable(){
 #ifdef DEBUG
-		Console::debug("destroyed variable [TODO]");
+		Console::writeInfoLn("destroyed variable [TODO]", "DEBUG", Color::yellow);
 #endif
 	}
 

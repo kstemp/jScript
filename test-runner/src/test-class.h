@@ -15,11 +15,11 @@ struct Test {
 		initialize();
 
 		Console::writeLn("[      ] " + describe());
-		Console::lineUp();
 
 		const bool pass = run();
 		countPass += pass;
 
+		Console::lineUp();
 		Console::lineStart();
 		Console::write("[ ");
 		Console::writeLn(pass ? "PASS" : "FAIL", pass ? Color::green : Color::red);

@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
 	// no input files
 	if (argc == 1) {
 
-		Console::writeLn("Error: no input file specified", Color::red);
+		Console::writeInfoLn("no input file specified", "ERROR", Color::red);
 		return 1;
 
 	}

@@ -12,7 +12,7 @@ const std::string CMD_LINE_ARGS_MSG = "Command line arguments: test-runner [file
 struct Test1 : Test {
 
 	std::string describe() override {
-		return "invalid grouping leads in a non-assignable node";
+		return "invalid grouping results in a non-assignable node";
 	}
 
 	bool run() override {
