@@ -1,7 +1,7 @@
 
 #include <iostream>
 
-#include "./src/test-class.h"
+#include "test-class.h"
 
 struct Test1 : Test {
 
