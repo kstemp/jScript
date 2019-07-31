@@ -18,8 +18,8 @@ struct Test1 : Test {
 	}
 
 	bool run() override {
-//		Assert_AreEqual(2, 3);
-		Assert_AreEqual(5, 5);
+		Assert_AreEqual(2, 3);
+		//Assert_AreEqual(5, 5);
 	}
 
 	void initialize() override{

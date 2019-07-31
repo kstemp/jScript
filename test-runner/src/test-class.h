@@ -38,8 +38,9 @@ struct TestSuite : Ts... {
 
 		( Ts::exec(countPass), ...);
 
-		std::cout << "\nExecuted " << count << " tests, of which " << countPass << " passed and " << count - countPass << " failed.\n\n";
-		
+		Console::writeLn("\nExecuted " + std::to_string(count) + " tests, of which " + std::to_string(countPass) + " passed and " + std::to_string(count - countPass) + " failed.\n", 
+								(count - countPass == 0) ? Color::green : Color::red);			
+
 	}
 
 };
