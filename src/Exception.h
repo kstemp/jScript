@@ -17,7 +17,7 @@ class Exception : public std::exception {
 			return _pos;
 		}
 
-		const char* what() const { 
+		const char* what() const noexcept { 
 			return _message.c_str();
 		}
 
