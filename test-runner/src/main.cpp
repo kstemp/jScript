@@ -5,18 +5,12 @@
 #include "test-class.h"
 
 const std::string SPLASH_MSG = "\njScript test-runner utility v.0.1\ncopyright (C) 2019 by K. Stempinski\n\n";
-const std::string CMD_LINE_ARGS_MSG = "Command line arguments: test-runner [fileName.xml]\n\n"; 
-
-
 
 struct Test1 : Test {
 
 	void init() override {
-		scriptFile = "variable/test.j";
-	}
-
-	std::string describe() override {
-		return "is true";
+		testData.fileName = "variable/test.j";
+		testData.description = "test description 1";
 	}
 
 	bool run() override {
@@ -27,16 +21,13 @@ struct Test1 : Test {
 
 struct Test2 : Test {
 
-	std::string describe() override {
-		return "another test";
-	}
-
 	bool run() override {
 		Assert_IsTrue(2 == 2);
 	}
 
 	void init() override {
-
+		testData.fileName = "func/test2.j";
+		testData.description = "another test description";
 	}
 
 };
@@ -44,9 +35,6 @@ struct Test2 : Test {
 int main(int argc, char** argv){
 
 	std::cout << SPLASH_MSG;
-
-	if (argc == 1)
-		std::cout << CMD_LINE_ARGS_MSG;
 
 	return TestSuite<
 		Test1,

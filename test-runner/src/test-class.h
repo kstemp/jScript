@@ -8,9 +8,7 @@
 
 struct Test {
 
-	std::string scriptFile = "";
-
-	virtual std::string describe() = 0;
+	TestData testData;
 
 	virtual void init() = 0;
 
@@ -20,17 +18,17 @@ struct Test {
 
 		init();
 
-		Console::writeLn("[      ] " + describe() + " (file '" + scriptFile + "')");
+		Console::writeLn("[      ] " + testData.description + " (file '" + testData.fileName + "')");
 
-		const bool pass = run();
-		countPass += pass;
+		testData.passed = run();
+		countPass += testData.passed;
 
 		Console::lineUp();
 		Console::lineStart();
 		Console::write("[ ");
-		Console::writeLn(pass ? "PASS" : "FAIL", pass ? Color::green : Color::red);
+		Console::writeLn(testData.passed ? "PASS" : "FAIL", testData.passed ? Color::green : Color::red);
 
-		AppVeyor::uploadTestResult(describe(), pass);
+		AppVeyor::uploadTestResult(testData);
 
 	}
 

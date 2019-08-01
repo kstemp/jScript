@@ -14,69 +14,65 @@
 
 #include <future>
 
-class AppVeyor {
+#include "testdata.h"
+#include "utils/getenv-helper.h"
+
+class AppVeyor final {
 
 public:
 
-static void post(std::string const& url, std::string const& body) {
+  static void post(std::string const& url, std::string const& body) {
 
-      std::list<std::string> header;
-      header.push_back("Content-Type: application/json");
+    std::list<std::string> header;
+    header.push_back("Content-Type: application/json");
+    curlpp::Cleanup clean;
+    curlpp::Easy r;
+    r.setOpt(new curlpp::options::Url(url));
+    r.setOpt(new curlpp::options::HttpHeader(header));
+    r.setOpt(new curlpp::options::PostFields(body));
+    r.setOpt(new curlpp::options::PostFieldSize(body.length()));
+    std::ostringstream response;
+    r.setOpt(new curlpp::options::WriteStream(&response));
+    r.perform();
+    // return std::string(response.str());
 
-      curlpp::Cleanup clean;
-      curlpp::Easy r;
-      r.setOpt(new curlpp::options::Url(url));
-      r.setOpt(new curlpp::options::HttpHeader(header));
-      r.setOpt(new curlpp::options::PostFields(body));
-      r.setOpt(new curlpp::options::PostFieldSize(body.length()));
+  }
 
-      std::ostringstream response;
-      r.setOpt(new curlpp::options::WriteStream(&response));
-
-      r.perform();
-
-     // return std::string(response.str());
+  static std::string getJSONTestDescription(const TestData& testData){
     
-}
+    rapidjson::Document document;
+    document.SetObject();
+    auto& allocator = document.GetAllocator();
+    
+    document.AddMember("testName", testData.description, allocator);
+    document.AddMember("testFramework", "NUnit", allocator); //TODO change to test-runner or sth like that
+    document.AddMember("fileName", testData.fileName, allocator); //TODO change fileName 
+    document.AddMember("outcome", testData.passed ? "Passed" : "Failed", allocator); 
+    document.AddMember("durationMiliseconds", testData.duration, allocator);
+    document.AddMember("ErrorMessage", testData.errorMessage, allocator);
+    document.AddMember("ErrorStackTrace", testData.stackTrace, allocator);
+    document.AddMember("StdOut", testData.stdOut, allocator);
+    document.AddMember("StdErr", testData.stdErr, allocator);
 
-    static void uploadTestResult(std::string description, bool passed){
+    rapidjson::StringBuffer sb;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+    document.Accept(writer);
 
-        rapidjson::Document document;
-        document.SetObject();
-        auto& allocator = document.GetAllocator();
+    return sb.GetString();
 
-        document.AddMember("testName", description, allocator);
-        document.AddMember("testFramework", "NUnit", allocator); //TODO change to test-runner or sth like that
-        document.AddMember("fileName", "code.j", allocator); //TODO change fileName 
-        document.AddMember("outcome", passed ? "Passed" : "Failed", allocator); 
-        document.AddMember("durationMiliseconds", "1000", allocator);
-        document.AddMember("ErrorMessage", "sample error message", allocator);
-        document.AddMember("ErrorStackTrace", "in function test() whatever", allocator);
-        document.AddMember("StdOut", "standard output", allocator);
-        document.AddMember("StdErr", "standard error output", allocator);  
+  }
 
-        rapidjson::StringBuffer sb;
-        rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+  static void uploadTestResult(const TestData& testData){
 
-        document.Accept(writer);
+    const std::optional<std::string> appVeyorURL = GetEnvHelper::getenv("APPVEYOR_API_URL");
 
-        char const* tmp = std::getenv("APPVEYOR_API_URL");
-if ( tmp == NULL ) {
-  return;
-    //  TODO throw or whatever
-} 
+    if (!appVeyorURL.has_value())
+      return; // TODO throw
 
-    std::string s(tmp);
-    s += "api/tests";
-  
-          post(s, sb.GetString());
+    const std::string postURL =  appVeyorURL.value() + "api/tests";
+    post(postURL, getJSONTestDescription(testData));
 
-
-
-    }
-
-
-
+  }
 
 };
 
