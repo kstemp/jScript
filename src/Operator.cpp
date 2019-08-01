@@ -24,7 +24,7 @@ Node* getOperatorNode(Node* arg1, Node* arg2, const OperatorType op) {
 	case OperatorType::Multiply:
 		return new BinOpNode(std::multiplies<>(), arg1, arg2);
 	case OperatorType::Divide:
-		return new BinOpNode([](Variable a1, Variable a2){
+		return new BinOpNode([](const Variable& a1, const Variable& a2){
 
 			if (a2.isZero())
 				throw Exception("division by zero", -69);

@@ -13,10 +13,9 @@ TODO
  */
 #pragma once
 
-#include "Config.h"
-
 #include <iostream>
-#include <map>
+
+#include <array>
 
 enum Color {
 	white = 0,
