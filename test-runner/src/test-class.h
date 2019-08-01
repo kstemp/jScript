@@ -30,7 +30,7 @@ struct Test {
 		Console::write("[ ");
 		Console::writeLn(pass ? "PASS" : "FAIL", pass ? Color::green : Color::red);
 
-		AppVeyor::uploadTestResult(describe());
+		AppVeyor::uploadTestResult(describe(), pass);
 
 	}
 

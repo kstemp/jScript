@@ -39,7 +39,7 @@ static void post(std::string const& url, std::string const& body) {
     
 }
 
-    static void uploadTestResult(std::string description){
+    static void uploadTestResult(std::string description, bool passed){
 
         rapidjson::Document document;
         document.SetObject();
@@ -48,7 +48,7 @@ static void post(std::string const& url, std::string const& body) {
         document.AddMember("testName", description, allocator);
         document.AddMember("testFramework", "NUnit", allocator); //TODO change to test-runner or sth like that
         document.AddMember("fileName", "code.j", allocator); //TODO change fileName 
-        document.AddMember("outcome", "Failed", allocator); 
+        document.AddMember("outcome", passed ? "Passed" : "Failed", allocator); 
         document.AddMember("durationMiliseconds", "1000", allocator);
         document.AddMember("ErrorMessage", "sample error message", allocator);
         document.AddMember("ErrorStackTrace", "in function test() whatever", allocator);

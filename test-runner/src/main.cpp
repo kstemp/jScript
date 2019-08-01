@@ -20,7 +20,7 @@ struct Test1 : Test {
 	}
 
 	bool run() override {
-		Assert_AreEqual(2+2, 4);
+		Assert_AreEqual(2+3, 4);
 	}
 
 };
