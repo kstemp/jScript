@@ -39,7 +39,7 @@ struct Test {
 template<class... Ts>
 struct TestSuite : Ts... {
 
-	void execute() {
+	int execute() {
 
 		const std::size_t count = sizeof...(Ts);
 		int countPass = 0;
@@ -48,6 +48,8 @@ struct TestSuite : Ts... {
 
 		Console::writeLn("\nExecuted " + std::to_string(count) + " tests, of which " + std::to_string(countPass) + " passed and " + std::to_string(count - countPass) + " failed.\n", 
 								(count - countPass == 0) ? Color::green : Color::red);			
+
+		return count - countPass;
 
 	}
 

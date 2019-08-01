@@ -48,7 +48,7 @@ int main(int argc, char** argv){
 	if (argc == 1)
 		std::cout << CMD_LINE_ARGS_MSG;
 
-	TestSuite<
+	return TestSuite<
 		Test1,
 		Test2
 	>{}.execute();
