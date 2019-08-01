@@ -18,15 +18,12 @@ struct Test {
 
 		init();
 
-		Console::writeLn("[      ] " + testData.description + " (file '" + testData.fileName + "')");
-
 		testData.passed = run();
 		countPass += testData.passed;
 
-		Console::lineUp();
-		Console::lineStart();
 		Console::write("[ ");
-		Console::writeLn(testData.passed ? "PASS" : "FAIL", testData.passed ? Color::green : Color::red);
+		Console::write(testData.passed ? "PASS" : "FAIL", testData.passed ? Color::green : Color::red);
+		Console::writeLn(" ] " + testData.description + " (file '" + testData.fileName + "')");
 
 		AppVeyor::uploadTestResult(testData);
 
