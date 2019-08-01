@@ -36,7 +36,7 @@ struct Variable {
 
 	std::variant<std::monostate, int, double> data;
 
-	const bool isUndefined() const{
+	[[nodiscard]] bool isUndefined() const{
 		return data.index() == 0;
 	}
 
@@ -71,7 +71,7 @@ struct Variable {
 
 	//TODO assert that T is numeric, or something like that
 	template <typename T>
-	Variable(const T& val) : data(val){
+	explicit Variable(const T& val) : data(val){
 #ifdef DEBUG
 		Console::writeInfoLn("created variable [TODO]", "DEBUG", Color::yellow);
 #endif
@@ -122,11 +122,11 @@ struct Variable {
 		return std::visit(
 			OverloadedVisitor{
 				[&](const auto& val) -> std::ostream& {
-					out << "[" << typeid(val).name() << "] " << val;
+					Console::writeInfoLn(std::to_string(val), typeid(val).name(), Color::blue);
 					return out;
 				},
 				[&](const std::monostate) -> std::ostream& {
-					out << "[undefined]";
+					Console::writeInfoLn("", "undefined", Color::blue);
 					return out;
 				}
 			},

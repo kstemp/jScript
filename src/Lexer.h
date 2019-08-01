@@ -6,32 +6,33 @@
 
 class Lexer {
 
-private:
-
 	const std::string input;
 
 	size_t pos;
 
+	size_t lineNumber;
+
 public:
 
-	const size_t gpos() const {
+	[[nodiscard]] size_t gpos() const{
 		return pos;
 	}
 
-	bool eof() {
+	[[nodiscard]] bool eof() const{
 		return pos >= input.size();
+		//return (input.peek() == EOF);
 	}
 
-	void advance() {
+	void advance(){
 		pos++;
 	}
 
-	const char current() const {
+	[[nodiscard]] char current() const{
 		return input[pos];
 	}
 
-	Lexer(const std::string& input) : input(input), pos(0) {}
-	
+	Lexer(const std::string& input) : input(input), pos(0){}
+
 	/*
 	
 		void skipWhitespaces()
@@ -39,11 +40,12 @@ public:
 		@description:	^^
 	
 	*/
-	void skipSpacesTabsNewlines() {
-	
-		while (isspace(input[pos]) || input[pos] == '\n' || input[pos] == '\t')
+	void skipSpacesTabsNewlines(){
+
+		while (isspace(input[pos]) || input[pos] == '\n' || input[pos] == '\t')	{
 			pos++;
-	
+		};
+
 	}
 
 	/*
@@ -53,10 +55,10 @@ public:
 		@description:	^^
 
 	*/
-	const std::string readString() {
+	[[nodiscard]] std::string readString(){
 
 		std::string out;
-		while (isalnum(input[pos])) {
+		while (isalnum(input[pos])){
 			out += input[pos];
 			pos++;
 		}
@@ -65,9 +67,9 @@ public:
 	}
 
 	//TODO exceptions
-	void eat(const std::string& keyword) {
-	
-		size_t foundPos = input.find_first_not_of(" \t\n", pos);
+	void eat(const std::string& keyword){
+
+		const size_t foundPos = input.find_first_not_of(" \t\n", pos);
 
 		//TODO comment
 		if (foundPos == std::string::npos)
@@ -77,28 +79,27 @@ public:
 		if (foundPos + keyword.length() > input.length())
 			throw Exception("to little space!", pos);
 
-		std::string sub = input.substr(foundPos, keyword.length());
+		const std::string sub = input.substr(foundPos, keyword.length());
 
-		if (sub == keyword) 
+		if (sub == keyword)
 			pos = foundPos + keyword.length();
-		else 
+		else
 			throw Exception("expected '" + keyword + "'", pos);
 
-	
 	}
 
-	const bool peek(const std::string& keyword) const {
+	[[nodiscard]] bool peek(const std::string& keyword) const{
 
 		size_t foundPos = input.find_first_not_of(" \t\n", pos);
 
 		//TODO comment
-		if (foundPos == std::string::npos) 
+		if (foundPos == std::string::npos)
 			return false;
 
 		// can't fit
 		if (foundPos + keyword.length() > input.length())
 			return false;
-		
+
 		return input.substr(foundPos, keyword.length()) == keyword;
 
 	}

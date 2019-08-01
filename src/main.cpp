@@ -15,7 +15,6 @@
 
 #include "Console.h"
 #include "Exception.h"
-
 #include "Interpreter.h"
 
 /*
@@ -27,7 +26,7 @@
 					reads the specified source, parses it and executes the script	
 
 */
-int main(int argc, char* argv[]) {
+int main(const int argc, const char* argv[]) {
 
 	// no input files
 	if (argc == 1) {

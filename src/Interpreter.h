@@ -24,8 +24,6 @@ std::unordered_map<std::string, FunctionNode*> methods;
 
 class Interpreter {
 
-private:
-
 	std::ostream& _out;
 
 	std::vector<Node*> program;
@@ -46,7 +44,7 @@ public:
 
 		Visitor* visitor = new Visitor;
 
-			//TODO destructor
+		//TODO destructors!!!!!!!!!
 
 		try {
 			
@@ -54,16 +52,15 @@ public:
 
 				it->accept(visitor);
 				
-				//Variable result = it->visit();
-				
 				if (printNumericalResults)
 					if (!visitor->result.isUndefined())
-						_out << visitor->result << "\n";
+						_out << visitor->result;
 				
 			}
 
 		} catch (const Exception&  e) {
 			
+			delete visitor;
 			throw e;
 
 		}

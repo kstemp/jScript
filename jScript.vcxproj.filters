@@ -39,13 +39,13 @@
     <ClInclude Include="src\Console.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="src\Interpreter.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="src\Visitor.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Config.h" />
+    <ClInclude Include="src\Interpreter.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">
