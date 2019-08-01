@@ -4,7 +4,7 @@
 
 #include "../../src/Console.h"
 
-#include <curlpp/Easy.hpp>
+#include "appveyor.h"
 
 struct Test {
 
@@ -30,7 +30,7 @@ struct Test {
 		Console::write("[ ");
 		Console::writeLn(pass ? "PASS" : "FAIL", pass ? Color::green : Color::red);
 
-//		AppVeyor::uploadTestResult(describe());
+		AppVeyor::uploadTestResult(describe());
 
 	}
 

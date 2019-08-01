@@ -1,23 +1,18 @@
 #pragma once
 
+#include <curlpp/cURLpp.hpp>
+#include <curlpp/Options.hpp>
 #include <curlpp/Easy.hpp>
+
+#include <sstream>
+
+#include <future>
 
 class AppVeyor {
 
-    static void uploadTestResult(const std::string& description){
+public:
 
-
-
-
-
-    }
-
-
-
-
-}
-/* 
-std::future<std::string> invoke(std::string const& url, std::string const& body) {
+static std::future<std::string> invoke(std::string const& url, std::string const& body) {
   return std::async(std::launch::async,
     [](std::string const& url, std::string const& body) mutable {
       std::list<std::string> header;
@@ -38,4 +33,18 @@ std::future<std::string> invoke(std::string const& url, std::string const& body)
       return std::string(response.str());
     }, url, body);
 }
-*/
+
+    static void uploadTestResult(const std::string& description){
+
+        std::cout << "APPVEYOR URL: " << std::getenv("APPVEYOR_API_URL") << "\n";
+       // invoke(std::getenv("APPVEYOR_API_URL"), "");
+
+
+
+    }
+
+
+
+
+};
+
