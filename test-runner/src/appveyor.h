@@ -4,6 +4,12 @@
 #include <curlpp/Options.hpp>
 #include <curlpp/Easy.hpp>
 
+#define RAPIDJSON_HAS_STDSTRING 1
+#include <rapidjson/rapidjson.h>
+#include <rapidjson/document.h>
+#include <rapidjson/writer.h>
+#include <rapidjson/stringbuffer.h>
+
 #include <sstream>
 
 #include <future>
@@ -12,9 +18,8 @@ class AppVeyor {
 
 public:
 
-static std::future<std::string> invoke(std::string const& url, std::string const& body) {
-  return std::async(std::launch::async,
-    [](std::string const& url, std::string const& body) mutable {
+static void post(std::string const& url, std::string const& body) {
+
       std::list<std::string> header;
       header.push_back("Content-Type: application/json");
 
@@ -30,20 +35,41 @@ static std::future<std::string> invoke(std::string const& url, std::string const
 
       r.perform();
 
-      return std::string(response.str());
-    }, url, body);
+     // return std::string(response.str());
+    
 }
 
-    static void uploadTestResult(const std::string& description){
+    static void uploadTestResult(std::string description){
 
-        std::cout << "APPVEYOR URL: " << std::getenv("APPVEYOR_API_URL") << "\n";
-//TODO check if environment variable exists
-        std::stringstream k;
-         k << std::string(std::getenv("APPVEYOR_API_URL")) << "api/tests"; 
-        
-std::string json = "{\"testName\": \"" + description + "\",\n\"testFramework\": \"NUnit\",\n\"fileName\": \"tests.dll\",\n \"outcome\": \"Passed\",\n \"durationMilliseconds\": \"1200\" \n }";
+        rapidjson::Document document;
+        document.SetObject();
+        auto& allocator = document.GetAllocator();
 
-      invoke(k.str(), json);
+        document.AddMember("testName", description, allocator);
+        document.AddMember("testFramework", "NUnit", allocator); //TODO change to test-runner or sth like that
+        document.AddMember("fileName", "code.j", allocator); //TODO change fileName 
+        document.AddMember("outcome", "Failed", allocator); 
+        document.AddMember("durationMiliseconds", "1000", allocator);
+        document.AddMember("ErrorMessage", "sample error message", allocator);
+        document.AddMember("ErrorStackTrace", "in function test() whatever", allocator);
+        document.AddMember("StdOut", "standard output", allocator);
+        document.AddMember("StdErr", "standard error output", allocator);  
+
+        rapidjson::StringBuffer sb;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+
+        document.Accept(writer);
+
+        char const* tmp = std::getenv("APPVEYOR_API_URL");
+if ( tmp == NULL ) {
+  return;
+    //  TODO throw or whatever
+} 
+
+    std::string s(tmp);
+    s += "api/tests";
+  
+          post(s, sb.GetString());
 
 
 
