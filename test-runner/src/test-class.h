@@ -4,6 +4,8 @@
 
 #include "../../src/Console.h"
 
+#include <curlpp/Easy.hpp>
+
 struct Test {
 
 	std::string scriptFile = "";
@@ -28,12 +30,8 @@ struct Test {
 		Console::write("[ ");
 		Console::writeLn(pass ? "PASS" : "FAIL", pass ? Color::green : Color::red);
 
-		saveToJSON();
+//		AppVeyor::uploadTestResult(describe());
 
-	}
-
-	virtual void saveToJSON() final {
-		
 	}
 
 };
@@ -43,7 +41,7 @@ struct TestSuite : Ts... {
 
 	void execute() {
 
-		static const std::size_t count = sizeof...(Ts);
+		const std::size_t count = sizeof...(Ts);
 		int countPass = 0;
 
 		( Ts::exec(countPass), ...);

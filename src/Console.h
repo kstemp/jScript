@@ -26,12 +26,12 @@ enum Color {
 	blue = 4
 };
 
-static const std::string reset = "\033[0m";
-static const std::string open = "\033[";
+const std::string reset = "\033[0m";
+const std::string open = "\033[";
 
-static const std::array<std::string, 5> colorStrings = {"", open + "31m", open + "92m", open + "93m", open + "94m"};
+const std::array<std::string, 5> colorStrings = {"", open + "31m", open + "92m", open + "93m", open + "94m"};
 
-class Console {
+class Console final {
 
 public:
 
@@ -47,6 +47,12 @@ public:
 		write(text + "\n", color);
 	}
 
+	static void writeInfoLn(const std::string text, const std::string& infoText, Color infoTextColor = Color::white){
+		write("[ ");
+		write(infoText, infoTextColor);
+		write(" ] " + text + "\n");
+	}
+
 	static void lineUp(){
 		std::cout << "\033[F";
 	}
@@ -55,9 +61,4 @@ public:
 		std::cout << "\r";
 	}
 
-	static void writeInfoLn(const std::string text, const std::string& infoText, Color infoTextColor = Color::white){
-		write("[ ");
-		write(infoText, infoTextColor);
-		write(" ] " + text + "\n");
-	}
 };

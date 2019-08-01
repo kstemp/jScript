@@ -1,6 +1,6 @@
 project(jScript)
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.7)
 
 set(CMAKE_CXX_FLAGS "-std=c++1z")
 
@@ -20,6 +20,8 @@ set_target_properties(testrunner
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "test-runner/bin/"
 )
+
+target_link_libraries(testrunner curlpp)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
