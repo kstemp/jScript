@@ -37,7 +37,13 @@ static std::future<std::string> invoke(std::string const& url, std::string const
     static void uploadTestResult(const std::string& description){
 
         std::cout << "APPVEYOR URL: " << std::getenv("APPVEYOR_API_URL") << "\n";
-       // invoke(std::getenv("APPVEYOR_API_URL"), "");
+//TODO check if environment variable exists
+        std::stringstream k;
+         k << std::string(std::getenv("APPVEYOR_API_URL")) << "api/tests"; 
+        
+std::string json = "{\"testName\": \"" + description + "\",\n\"testFramework\": \"NUnit\",\n\"fileName\": \"tests.dll\",\n \"outcome\": \"Passed\",\n \"durationMilliseconds\": \"1200\" \n }";
+
+      invoke(k.str(), json);
 
 
 
