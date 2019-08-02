@@ -2,6 +2,9 @@
 code.j
 other_code.j
 
+# vs code specific
+.vscode/
+
 #binaries
 bin/
 testrunner/bin/
