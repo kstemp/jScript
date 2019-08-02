@@ -40,7 +40,7 @@ public:
 
   static std::string getJSONTestDescription(const TestData& testData){
     
-    rapidjson::Document document;
+	rapidjson::Document document;
     document.SetObject();
     auto& allocator = document.GetAllocator();
     
