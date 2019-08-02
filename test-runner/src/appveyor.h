@@ -47,7 +47,7 @@ public:
     document.AddMember("testName", testData.description, allocator);
     document.AddMember("testFramework", "NUnit", allocator); //TODO change to test-runner or sth like that
     document.AddMember("fileName", testData.fileName, allocator); //TODO change fileName 
-    document.AddMember("outcome", testData.passed ? "Passed" : "Failed", allocator); 
+    document.AddMember("outcome", "Passed", allocator);  //TODO passed or failed
     document.AddMember("durationMiliseconds", testData.duration, allocator);
     document.AddMember("ErrorMessage", testData.errorMessage, allocator);
     document.AddMember("ErrorStackTrace", testData.stackTrace, allocator);

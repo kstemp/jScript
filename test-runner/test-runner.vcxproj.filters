@@ -32,5 +32,8 @@
     <ClInclude Include="src\utils\getenv-helper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\assert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
