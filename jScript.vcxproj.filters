@@ -46,6 +46,7 @@
     <ClInclude Include="src\Interpreter.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Resolver.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">
@@ -77,5 +78,6 @@
     <ClCompile Include="src\Visitor.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Resolver.cpp" />
   </ItemGroup>
 </Project>

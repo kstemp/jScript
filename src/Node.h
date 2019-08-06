@@ -29,12 +29,12 @@ struct FuncCallNode;
 struct VarAssignNode;
 struct VarDeclNode;
 struct ReturnNode;
+struct FunctionNode;
 
 #include "Visitor.h"
+#include "Resolver.h"
 
 extern std::deque<Scope> scopes;
-
-struct FunctionNode;
 
 extern std::unordered_map<std::string, FunctionNode*> methods;
 
@@ -52,6 +52,7 @@ struct Node {
 		Node(){}
 
 		virtual void accept(Visitor* visitor) = 0;
+		virtual void accept(Resolver* resolver) = 0;
 		
 		virtual ~Node(){}
 
@@ -74,6 +75,7 @@ public:
 	ValueNode(const T val) : _value(val) {} 
 
 	void accept(Visitor* visitor);
+	void accept(Resolver* resolver);
 
 	~ValueNode() {}
 
@@ -102,6 +104,7 @@ public:
 		: function(function), arg(arg) {}
 
 	void accept(Visitor* visitor);
+	void accept(Resolver* resolver);
 
 	~UnaryNode() {
 		delete arg;
@@ -132,6 +135,7 @@ public:
 		: varName(name) {}
 
 	void accept(Visitor* visitor);
+	void accept(Resolver* resolver);
 
 };
 
@@ -156,7 +160,8 @@ public:
 		: function(function), arg1(arg1), arg2(arg2) {}
 
 
-	void accept(Visitor* visitor);
+	void accept(Visitor* visitor);	
+	void accept(Resolver* resolver);
 
 	~BinOpNode() {
 		delete arg1;
@@ -183,6 +188,7 @@ public:
 	VarAssignNode(Node* arg1, Node* arg2) : arg1(arg1), arg2(arg2) {}
 
 	void accept(Visitor* visitor);
+	void accept(Resolver* resolver);
 
 	~VarAssignNode() {
 		delete arg1;
@@ -202,6 +208,7 @@ struct WhileNode : Node {
 public:
 
 	void accept(Visitor* visitor);
+	void accept(Resolver* resolver);
 
 	~WhileNode() {
 		body.clear();
@@ -237,6 +244,7 @@ public:
 	FunctionNode(const std::string name) : name(name) {}
 
 	void accept(Visitor* visitor);
+	void accept(Resolver* resolver);
 
 	~FunctionNode(){
 		
@@ -256,6 +264,7 @@ struct FuncCallNode : Node {
 	FuncCallNode(const std::string name) : name(name) {}
 
 	void accept(Visitor* visitor);
+	void accept(Resolver* resolver);
 
 };
 
@@ -281,6 +290,7 @@ public:
 
 	ReturnNode(Node* expr) : expr(expr) {}
 
+	void accept(Resolver* resolver);
 	void accept(Visitor* visitor);
 
 };
@@ -309,5 +319,5 @@ public:
 		: varName(varName), valueExpr(valueExpr) {}
 
 	void accept(Visitor* visitor);
-
+	void accept(Resolver* resolver);
 };

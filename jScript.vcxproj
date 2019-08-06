@@ -143,6 +143,7 @@
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\Operator.h" />
     <ClInclude Include="src\Parser.h" />
+    <ClInclude Include="src\Resolver.h" />
     <ClInclude Include="src\Scope.h" />
     <ClInclude Include="src\Variable.h" />
     <ClInclude Include="src\Visitor.h" />
@@ -152,6 +153,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\Operator.cpp" />
+    <ClCompile Include="src\Resolver.cpp" />
     <ClCompile Include="src\Visitor.cpp" />
   </ItemGroup>
   <ItemGroup>

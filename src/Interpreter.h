@@ -38,7 +38,31 @@ public:
 	
 	}
 
+	void resolveVariables() {
+
+		reset();
+
+		auto resolver = new Resolver;
+
+		//TODO destructors!!!!!!!!!
+
+		try {
+
+			for (auto& it : program) 
+				it->accept(resolver);
+
+		}	catch (const Exception& e) {
+
+			delete resolver;
+			throw e;
+
+		}
+
+	}
+
 	void run(const bool printNumericalResults = false){
+
+		resolveVariables();
 
 		reset();
 

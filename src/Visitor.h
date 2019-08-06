@@ -11,7 +11,7 @@
 
 #pragma once
 
-class Visitor;
+struct Visitor;
 
 #include "Node.h"
 
