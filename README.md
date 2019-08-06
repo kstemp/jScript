@@ -1,10 +1,10 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/4kisqm39kkn4op3m?svg=true)](https://ci.appveyor.com/project/kstemp/jscript) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# jScript scripting language specification
+# jsc scripting language specification
 
 ## Data Types
 
-jScript supports the following data types:
+jsc supports the following data types:
 
 * ```Int```
 * ```Double``` 
@@ -25,7 +25,7 @@ var rab = 'r'; 		// rab is Char
 var baz;			// baz is Undefined
 ~~~~
 
-jScript is dynamically typed, but all variables must be declared before they may be used. 
+jsc is dynamically typed, but all variables must be declared before they may be used. 
 
 ## Control Flow
 
@@ -101,7 +101,3 @@ fib(7);
 ~~~~
 [int] 21
 ~~~~
-
-## Appendix
-
-Why the name? One starting with 'j' that I had in mind was already taken.

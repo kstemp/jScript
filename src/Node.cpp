@@ -1,46 +1,46 @@
 #include "Node.h"
 
 void ValueNode::accept(Visitor* visitor) {
-	visitor->visitValueNode(*this);
+	visitor->visit(*this);
 }
 
 void UnaryNode::accept(Visitor* visitor) {
-	visitor->visitUnaryNode(*this);
+	visitor->visit(*this);
 }
 
 void VariableNode::accept(Visitor* visitor) {
-	visitor->visitVariableNode(*this);
+	visitor->visit(*this);
 }
 
 void BinOpNode::accept(Visitor* visitor) {
-	visitor->visitBinOpNode(*this);
+	visitor->visit(*this);
 }
 
 
 void VarAssignNode::accept(Visitor* visitor) {
-	visitor->visitVarAssignNode(*this);
+	visitor->visit(*this);
 }
 
 
 void WhileNode::accept(Visitor* visitor) {
-	visitor->visitWhileNode(*this);
+	visitor->visit(*this);
 }
 
 
 void FunctionNode::accept(Visitor* visitor) {
-	visitor->visitFunctionNode(*this);
+	visitor->visit(*this);
 }
 
 void FuncCallNode::accept(Visitor* visitor) {
-	visitor->visitFuncCallNode(*this);
+	visitor->visit(*this);
 }
 
 
 void ReturnNode::accept(Visitor* visitor) {
-	visitor->visitReturnNode(*this);
+	visitor->visit(*this);
 }
 
 
 void VarDeclNode::accept(Visitor* visitor) {
-	visitor->visitVarDeclNode(*this);
+	visitor->visit(*this);
 }

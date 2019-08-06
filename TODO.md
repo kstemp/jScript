@@ -1,8 +1,29 @@
 # TODO
 
-* fix AppVeyor warnings (struct/class...)
 * erros handling - including position of the error, distinction into ParserError/RuntimeError etc.
 * lexical scoping
+* fix AppVeyor warnings (struct/class...)
+* if a node does not return a value, it should at least erase the previous value - note that code 
+
+~~~~ 
+2+2*2;  
+(2+2)*2;  
+  
+func test(){ 
+    
+}
+
+test();
+~~~~
+
+produces output 
+
+~~~~ 
+[int] 6  
+[int] 8  
+[int] 8  
+[int] 8
+~~~~
 
 ## Bugs 
 
