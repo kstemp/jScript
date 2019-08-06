@@ -147,7 +147,7 @@ struct Variable {
 
 	~Variable(){
 #ifdef DEBUG
-		Console::writeInfoLn("destroyed variable [TODO]", "DEBUG", Color::yellow);
+		Console::writeInfoLn("destroyed variable [ " + getTypeName() + " ]", "DEBUG", Color::yellow);
 #endif
 	}
 
