@@ -44,15 +44,17 @@ struct Parser {
 
 		if (lexer.peek("func "))
 			return parseFunctionDeclaration();
-		else if (lexer.peek("return ")) 
+		
+		if (lexer.peek("return ")) 
 			return parseReturnStatement();
-		else if (lexer.peek("while ")) 
-			parseWhileStatement();
-		else if (lexer.peek("var ")) 
+		
+		if (lexer.peek("while ")) 
+			return parseWhileStatement();
+		
+		if (lexer.peek("var ")) 
 			return parseVariableDeclaration();
-		else {
 
-			try {
+		try {
 				Node* expr = parseExpression();
 				
 				lexer.eat(";");
@@ -65,8 +67,6 @@ struct Parser {
 					stack.pop();
 				throw e;
 			}
-
-		}
 
 	}
 
