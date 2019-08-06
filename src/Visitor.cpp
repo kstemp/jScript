@@ -10,17 +10,19 @@
 
 #include "Visitor.h"
 
-
-void Visitor::visitValueNode(ValueNode& valueNode){
+template<>
+void Visitor::visit(ValueNode& valueNode){
 	result = valueNode._value;
 }
 
-void Visitor::visitUnaryNode(UnaryNode& unaryNode){
+template<>
+void Visitor::visit(UnaryNode& unaryNode){
 	unaryNode.arg->accept(this);
 	result = unaryNode.function(result);
 }
 
-void Visitor::visitVariableNode(VariableNode& variableNode){
+template<>
+void Visitor::visit(VariableNode& variableNode){
 
 	for (auto it = scopes.rbegin(); it != scopes.rend(); ++it){
 
@@ -41,7 +43,8 @@ void Visitor::visitVariableNode(VariableNode& variableNode){
 
 }
 
-void Visitor::visitBinOpNode(BinOpNode& binOpNode){
+template<>
+void Visitor::visit(BinOpNode& binOpNode){
 
 	binOpNode.arg1->accept(this);
 	const Variable res1 = result;
@@ -53,7 +56,8 @@ void Visitor::visitBinOpNode(BinOpNode& binOpNode){
 
 }
 
-void Visitor::visitVarAssignNode(VarAssignNode& varAssignNode){
+template<>
+void Visitor::visit(VarAssignNode& varAssignNode){
 
 	varAssignNode.arg1->accept(this);
 
@@ -65,7 +69,8 @@ void Visitor::visitVarAssignNode(VarAssignNode& varAssignNode){
 
 }
 
-void Visitor::visitWhileNode(WhileNode& whileNode){
+template<>
+void Visitor::visit(WhileNode& whileNode){
 
 	while (true) {
 
@@ -99,7 +104,8 @@ void Visitor::visitWhileNode(WhileNode& whileNode){
 
 }
 
-void Visitor::visitFunctionNode(FunctionNode& functionNode){
+template<>
+void Visitor::visit(FunctionNode& functionNode){
 
 	//TODO maybe we should have a derived GlobalScope : Scope instead...?
 	if (scopes.back().name != "global")
@@ -109,7 +115,8 @@ void Visitor::visitFunctionNode(FunctionNode& functionNode){
 
 }
 
-void Visitor::visitFuncCallNode(FuncCallNode& funcCallNode){
+template<>
+void Visitor::visit(FuncCallNode& funcCallNode){
 
 	auto it = methods.find(funcCallNode.name);
 
@@ -141,14 +148,16 @@ void Visitor::visitFuncCallNode(FuncCallNode& funcCallNode){
 
 }
 
-void Visitor::visitReturnNode(ReturnNode& returnNode){
+template<>
+void Visitor::visit(ReturnNode& returnNode){
 
 	returnNode.expr->accept(this);
 	throw result;
 
 }
 
-void Visitor::visitVarDeclNode(VarDeclNode& varDeclNode){
+template<>
+void Visitor::visit(VarDeclNode& varDeclNode){
 
 	if (scopes.back().variables.count(varDeclNode.varName))
 		throw Exception("variable '" + varDeclNode.varName + "' has already been declared in this scope");
