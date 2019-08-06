@@ -26,15 +26,26 @@ struct OverloadedVisitor : Ts... {
 template <class... Ts>
 OverloadedVisitor(Ts ...) -> OverloadedVisitor<Ts...>;
 
-//TODO check that types of G and Ts are the same (static_assert, is_same(_v) and enable_if, perhaps?)
-template <typename G, typename... Ts>
-bool isAnyEqualTo(G arg1, Ts ... args){
-	return ((arg1 == args) || ...);
-}
-
 struct Variable {
 
 	std::variant<std::monostate, int, double> data;
+
+	[[nodiscard]] std::string getTypeName() const{
+		return std::visit(
+			OverloadedVisitor{
+				[](const int&) -> std::string {
+					return "int";
+				},
+				//NOTE we need this -> T here, otherwise compiler is unhappy...
+				[](const double&) -> std::string {
+					return "double";
+				},
+				[](const std::monostate&) -> std::string {
+					return "undefined";
+				}
+			},
+			data);
+	}
 
 	[[nodiscard]] bool isUndefined() const{
 		return data.index() == 0;
@@ -62,10 +73,10 @@ struct Variable {
 
 	}
 
-	// data is set to std::monostate, since Variable is of "undefined" type
-	Variable(){
+	// data is (automatically!) set to std::monostate, since Variable is of "undefined" type
+	Variable() {
 #ifdef DEBUG
-		Console::writeInfoLn("created variable [undefined]", "DEBUG", Color::yellow);
+		Console::writeInfoLn("created variable [ " + getTypeName() + " ]", "DEBUG", Color::yellow);
 #endif
 	}
 
@@ -73,7 +84,7 @@ struct Variable {
 	template <typename T>
 	explicit Variable(const T& val) : data(val){
 #ifdef DEBUG
-		Console::writeInfoLn("created variable [TODO]", "DEBUG", Color::yellow);
+		Console::writeInfoLn("created variable [ " + getTypeName() + " ]", "DEBUG", Color::yellow);
 #endif
 	}
 
@@ -122,7 +133,7 @@ struct Variable {
 		return std::visit(
 			OverloadedVisitor{
 				[&](const auto& val) -> std::ostream& {
-					Console::writeInfoLn(std::to_string(val), typeid(val).name(), Color::blue);
+					Console::writeInfoLn(std::to_string(val), var.getTypeName(), Color::blue);
 					return out;
 				},
 				[&](const std::monostate) -> std::ostream& {
