@@ -11,7 +11,7 @@
 #pragma once
 
 #include <string>
-#include <unordered_map>
+#include <map>
 
 #include "Variable.h"
 
@@ -19,7 +19,7 @@ struct Scope {
 
 	const std::string name;
 
-	std::unordered_map<std::string, Variable> variables;
+	std::map<std::string, Variable> variables;
 
 	Scope(const std::string name = "")
 		: name(name) {}

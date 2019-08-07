@@ -127,6 +127,8 @@ private:
 
 public:
 
+	int up;
+
 	const std::string varName;
 
 	Variable* var;

@@ -7,6 +7,8 @@
 
 #include "Resolver.h"
 
+//TODO dedicated methods for creating new scope or removing one
+
 template<>
 void Resolver::visit(ValueNode& valueNode) {
 	// do nothing
@@ -14,20 +16,23 @@ void Resolver::visit(ValueNode& valueNode) {
 
 template<>
 void Resolver::visit(UnaryNode& unaryNode) {
-	unaryNode.accept(this);
+	unaryNode.arg->accept(this);
 }
 
 template<>
 void Resolver::visit(VariableNode& variableNode) {
 
-	for (auto i = scopes.size() - 1; i >= 0; --i) {
+	for (int i = scopes.size() - 1; i >= 0; i -= 1) {
+		i;
+		i;
 
-		auto varit = scopes.at(1).variables.find(variableNode.varName);
-		if (varit != it->variables.end()) {
+		auto varit = scopes.at(i).variables.find(variableNode.varName);
+		if (varit != scopes.at(i).variables.end()) {
 
-			//Console::writeLn("VariableNode: found variable '" + varName + "' = " + std::to_string(it->second->Int()) + " in scope '" + s->name + "' (we are in scope '" + currentScope->name + "')", Color::Yellow);
-			variableNode.var = &varit->second;
-			result = varit->second;
+			int up = scopes.size() - 1 - i;
+
+			Console::writeLn("VariableNode: found variable '" + variableNode.varName + " in scope '" + scopes.at(i).name + "', which is " + std::to_string(up) + " scopes up", Color::yellow);
+			variableNode.up = up;
 
 			return;
 
@@ -47,7 +52,7 @@ void Resolver::visit(BinOpNode& binOpNode) {
 
 template<>
 void Resolver::visit(VarAssignNode& varAssignNode) {
-
+	// do nothing
 }
 
 template<>
@@ -55,8 +60,8 @@ void Resolver::visit(WhileNode& whileNode) {
 
 	scopes.emplace_back(Scope("while block"));
 	//
-	for (const auto& jt : whileNode.body)
-		jt->accept(this);
+	for (const auto& it : whileNode.body)
+		it->accept(this);
 	//
 	scopes.pop_back();
 
@@ -67,9 +72,11 @@ void Resolver::visit(FunctionNode& functionNode) {
 
 	scopes.emplace_back(Scope(functionNode.name));
 	//
+	for (size_t i = 0; i < functionNode.parameters.size(); ++i) 
+		scopes.back().variables[functionNode.parameters[i]] = Variable(); //TODO what value?
 
-
-
+	for (const auto& it : functionNode.body)
+		it->accept(this);
 	//
 	scopes.pop_back();
 
@@ -77,12 +84,15 @@ void Resolver::visit(FunctionNode& functionNode) {
 
 template<>
 void Resolver::visit(FuncCallNode& funcCallNode) {
+	
+	for (const auto& it : funcCallNode.arguments)
+		it->accept(this);
 
 }
 
 template<>
 void Resolver::visit(ReturnNode& returnNode) {
-
+	returnNode.expr->accept(this);
 }
 
 template<>
