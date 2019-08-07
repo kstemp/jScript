@@ -23,8 +23,6 @@ template<>
 void Resolver::visit(VariableNode& variableNode) {
 
 	for (int i = scopes.size() - 1; i >= 0; i -= 1) {
-		i;
-		i;
 
 		auto varit = scopes.at(i).variables.find(variableNode.varName);
 		if (varit != scopes.at(i).variables.end()) {
@@ -52,7 +50,7 @@ void Resolver::visit(BinOpNode& binOpNode) {
 
 template<>
 void Resolver::visit(VarAssignNode& varAssignNode) {
-	// do nothing
+	//TODO implement
 }
 
 template<>
@@ -97,5 +95,10 @@ void Resolver::visit(ReturnNode& returnNode) {
 
 template<>
 void Resolver::visit(VarDeclNode& varDeclNode) {
+
+	if (scopes.back().variables.count(varDeclNode.varName))
+		throw Exception("variable '" + varDeclNode.varName + "' has already been declared in this scope");
+
+	scopes.back().variables[varDeclNode.varName] = Variable();
 
 }
