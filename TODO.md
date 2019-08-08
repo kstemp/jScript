@@ -1,5 +1,6 @@
 # TODO
 
+* use contexpr ifs and not preprocessor directives (see Console.h, Variable.h etc.)
 * reduce the amount of boilerplate code for arithmetic operations on variables - we have std::plus, then overload of +, then getVarr etc. 
 * erros handling - including position of the error, distinction into ParserError/RuntimeError etc.
 * lexical scoping
