@@ -27,10 +27,10 @@ void Resolver::visit(VariableNode& variableNode) {
 		auto varit = scopes.at(i).variables.find(variableNode.varName);
 		if (varit != scopes.at(i).variables.end()) {
 
-			int up = scopes.size() - 1 - i;
+			int up = (scopes.size() - 1) - i;
 
 			Console::writeLn("VariableNode: found variable '" + variableNode.varName + " in scope '" + scopes.at(i).name + "', which is " + std::to_string(up) + " scopes up", Color::yellow);
-			variableNode.up = up;
+			variableNode.setUp(up);
 
 			return;
 

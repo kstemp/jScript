@@ -24,10 +24,10 @@ void Visitor::visit(UnaryNode& unaryNode){
 template<>
 void Visitor::visit(VariableNode& variableNode){
 
-	for (auto it = scopes.rbegin(); it != scopes.rend(); ++it){
+	Scope& s = scopes[scopes.size() - 1 - variableNode.up];
 
-		auto varit = it->variables.find(variableNode.varName);
-		if (varit != it->variables.end()){
+		auto varit = s.variables.find(variableNode.varName);
+		if (varit != s.variables.end()){
 
 			//Console::writeLn("VariableNode: found variable '" + varName + "' = " + std::to_string(it->second->Int()) + " in scope '" + s->name + "' (we are in scope '" + currentScope->name + "')", Color::Yellow);
 			variableNode.var = &varit->second;
@@ -36,7 +36,6 @@ void Visitor::visit(VariableNode& variableNode){
 			return;
 
 		}
-	}
 
 	// Variable was not found in any enclosing scope
 	throw Exception("variable '" + variableNode.varName + "' does not exist", -69);
@@ -120,18 +119,25 @@ void Visitor::visit(FuncCallNode& funcCallNode){
 
 	auto it = methods.find(funcCallNode.name);
 
+	Console::writeInfoLn("calling func " + funcCallNode.name, "info");
+
 	if (it == methods.end())
 		throw Exception("method '" + funcCallNode.name + "' does not exist", -69);
 
 	if (it->second->parameters.size() != funcCallNode.arguments.size())
 		throw Exception("invalid number: " + std::to_string(funcCallNode.arguments.size()) + " of arguments for function '" + funcCallNode.name + "' (expected " + std::to_string(it->second->parameters.size()) + ")", -69);
 
-	scopes.emplace_back(Scope(it->first));
+	std::vector<Variable> results;
 
 	for (size_t i = 0; i < funcCallNode.arguments.size(); ++i){
 		funcCallNode.arguments[i]->accept(this);
-		scopes.back().variables[it->second->parameters[i]] = result;
+		results.push_back(result);
 	}
+	
+	scopes.emplace_back(Scope(it->first));
+
+	for (size_t i = 0; i < funcCallNode.arguments.size(); ++i) 
+		scopes.back().variables[it->second->parameters[i]] = results[i];
 
 	try{
 

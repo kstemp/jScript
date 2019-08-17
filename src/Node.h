@@ -127,6 +127,10 @@ private:
 
 public:
 
+	void setUp(int _up) {
+		up = _up;
+	}
+
 	int up;
 
 	const std::string varName;
