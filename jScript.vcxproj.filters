@@ -39,14 +39,17 @@
     <ClInclude Include="src\Console.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="src\Visitor.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\Interpreter.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Resolver.h" />
+    <ClInclude Include="src\NodeVisitor.h" />
+    <ClInclude Include="src\RunVisitor.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Resolver.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">
@@ -75,9 +78,11 @@
     <ClCompile Include="src\Node.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\Visitor.cpp">
+    <ClCompile Include="src\RunVisitor.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\Resolver.cpp" />
+    <ClCompile Include="src\Resolver.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

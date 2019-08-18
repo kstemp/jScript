@@ -31,8 +31,7 @@ struct VarDeclNode;
 struct ReturnNode;
 struct FunctionNode;
 
-#include "Visitor.h"
-#include "Resolver.h"
+#include "NodeVisitor.h"
 
 extern std::deque<Scope> scopes;
 
@@ -51,8 +50,7 @@ struct Node {
 
 		Node(){}
 
-		virtual void accept(Visitor* visitor) = 0;
-		virtual void accept(Resolver* resolver) = 0;
+		virtual void accept(NodeVisitor* visitor) = 0;
 		
 		virtual ~Node(){}
 
@@ -74,8 +72,7 @@ public:
 	template<typename T>
 	ValueNode(const T val) : _value(val) {} 
 
-	void accept(Visitor* visitor);
-	void accept(Resolver* resolver);
+	void accept(NodeVisitor* visitor);
 
 	~ValueNode() {}
 
@@ -103,8 +100,7 @@ public:
 	UnaryNode(const std::function<Variable(const Variable&)> function, Node* arg)
 		: function(function), arg(arg) {}
 
-	void accept(Visitor* visitor);
-	void accept(Resolver* resolver);
+	void accept(NodeVisitor* visitor);
 
 	~UnaryNode() {
 		delete arg;
@@ -140,8 +136,7 @@ public:
 	VariableNode(const std::string name)
 		: varName(name) {}
 
-	void accept(Visitor* visitor);
-	void accept(Resolver* resolver);
+	void accept(NodeVisitor* visitor);
 
 };
 
@@ -166,8 +161,7 @@ public:
 		: function(function), arg1(arg1), arg2(arg2) {}
 
 
-	void accept(Visitor* visitor);	
-	void accept(Resolver* resolver);
+	void accept(NodeVisitor* visitor);	
 
 	~BinOpNode() {
 		delete arg1;
@@ -193,8 +187,7 @@ public:
 
 	VarAssignNode(Node* arg1, Node* arg2) : arg1(arg1), arg2(arg2) {}
 
-	void accept(Visitor* visitor);
-	void accept(Resolver* resolver);
+	void accept(NodeVisitor* visitor);
 
 	~VarAssignNode() {
 		delete arg1;
@@ -213,8 +206,7 @@ struct WhileNode : Node {
 
 public:
 
-	void accept(Visitor* visitor);
-	void accept(Resolver* resolver);
+	void accept(NodeVisitor* visitor);
 
 	~WhileNode() {
 		body.clear();
@@ -249,8 +241,7 @@ public:
 
 	FunctionNode(const std::string name) : name(name) {}
 
-	void accept(Visitor* visitor);
-	void accept(Resolver* resolver);
+	void accept(NodeVisitor* visitor);
 
 	~FunctionNode(){
 		
@@ -269,8 +260,7 @@ struct FuncCallNode : Node {
 
 	FuncCallNode(const std::string name) : name(name) {}
 
-	void accept(Visitor* visitor);
-	void accept(Resolver* resolver);
+	void accept(NodeVisitor* visitor);
 
 };
 
@@ -296,8 +286,7 @@ public:
 
 	ReturnNode(Node* expr) : expr(expr) {}
 
-	void accept(Resolver* resolver);
-	void accept(Visitor* visitor);
+	void accept(NodeVisitor* visitor);
 
 };
 
@@ -324,6 +313,6 @@ public:
 	VarDeclNode(const std::string varName, Node* valueExpr = nullptr)
 		: varName(varName), valueExpr(valueExpr) {}
 
-	void accept(Visitor* visitor);
-	void accept(Resolver* resolver);
+	void accept(NodeVisitor* visitor);
+
 };

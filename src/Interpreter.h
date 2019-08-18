@@ -17,6 +17,8 @@
 #include "Lexer.h"
 #include "Parser.h"
 #include "Scope.h"
+#include "Resolver.h"
+#include "RunVisitor.h"
 
 std::deque<Scope> scopes;
 
@@ -66,7 +68,7 @@ public:
 
 		reset();
 
-		Visitor* visitor = new Visitor;
+		auto visitor = new RunVisitor;
 
 		//TODO destructors!!!!!!!!!
 

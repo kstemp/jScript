@@ -9,17 +9,14 @@
 
 //TODO dedicated methods for creating new scope or removing one
 
-template<>
 void Resolver::visit(ValueNode& valueNode) {
 	// do nothing
 }
 
-template<>
 void Resolver::visit(UnaryNode& unaryNode) {
 	unaryNode.arg->accept(this);
 }
 
-template<>
 void Resolver::visit(VariableNode& variableNode) {
 
 	for (int i = scopes.size() - 1; i >= 0; i -= 1) {
@@ -42,18 +39,15 @@ void Resolver::visit(VariableNode& variableNode) {
 
 }
 
-template<>
 void Resolver::visit(BinOpNode& binOpNode) {
 	binOpNode.arg1->accept(this);
 	binOpNode.arg2->accept(this);
 }
 
-template<>
 void Resolver::visit(VarAssignNode& varAssignNode) {
 	//TODO implement
 }
 
-template<>
 void Resolver::visit(WhileNode& whileNode) {
 
 	whileNode.expr->accept(this);
@@ -67,7 +61,6 @@ void Resolver::visit(WhileNode& whileNode) {
 
 }
 
-template<>
 void Resolver::visit(FunctionNode& functionNode) {
 
 	scopes.emplace_back(Scope(functionNode.name));
@@ -82,7 +75,6 @@ void Resolver::visit(FunctionNode& functionNode) {
 
 }
 
-template<>
 void Resolver::visit(FuncCallNode& funcCallNode) {
 	
 	for (const auto& it : funcCallNode.arguments)
@@ -90,12 +82,10 @@ void Resolver::visit(FuncCallNode& funcCallNode) {
 
 }
 
-template<>
 void Resolver::visit(ReturnNode& returnNode) {
 	returnNode.expr->accept(this);
 }
 
-template<>
 void Resolver::visit(VarDeclNode& varDeclNode) {
 
 	if (scopes.back().variables.count(varDeclNode.varName))
