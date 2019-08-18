@@ -56,6 +56,8 @@ void Resolver::visit(VarAssignNode& varAssignNode) {
 template<>
 void Resolver::visit(WhileNode& whileNode) {
 
+	whileNode.expr->accept(this);
+
 	scopes.emplace_back(Scope("while block"));
 	//
 	for (const auto& it : whileNode.body)
