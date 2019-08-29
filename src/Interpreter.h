@@ -22,16 +22,20 @@
 
 std::deque<Scope> scopes;
 
+using Program = std::vector<Node*>;
+
 std::unordered_map<std::string, FunctionNode*> methods; 
 
 class Interpreter {
 
+	std::istream& _in;
 	std::ostream& _out;
 
-	std::vector<Node*> program;
 
 public:
 
+	Program program;
+	
 	void reset() {
 
 		// initialize global scope. It is the only scope that can contain function declarations
@@ -93,7 +97,7 @@ public:
 
 	}
 
-	void init(std::istream& input) {
+	void parse() {
 
 		// cleanup
 		for (auto& it : program)
@@ -101,7 +105,7 @@ public:
 
 		program.clear();
 
-		Lexer lexer(input);
+		Lexer lexer(_in);
 		Parser parser(lexer);
 
 		try {
@@ -116,6 +120,6 @@ public:
 	
 	}
 
-	Interpreter(std::ostream& out) : _out(out) {}
+	Interpreter(std::istream& in, std::ostream& out) : _in(in), _out(out) {}
 
 };

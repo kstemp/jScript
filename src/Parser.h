@@ -1,23 +1,24 @@
 #pragma once
 
+#include <array>
 #include <stack>
 #include <iostream>
 
 #include "Lexer.h"
 #include "Operator.h"
 
+const std::array<std::string, 6> RESERVED = { "global", "func", "var", "return", "while", "if" };
+
 struct Parser {
 
-	const std::vector<std::string> RESERVED = { "global", "func", "var", "return", "while", "if" };
+	Lexer& lexer;
 
-	inline void checkReserved(const std::string& name) {
+	void checkReserved(const std::string& name) const {
 
 		if (std::find(std::begin(RESERVED), std::end(RESERVED), name) != std::end(RESERVED))
 			throw Exception("'" + name + "' is a reserved keyword and cannot be used as a name", lexer.pos());
 
 	}
-
-	Lexer& lexer;
 
 	void parse(std::vector<Node*>& program) {
 
@@ -84,6 +85,7 @@ struct Parser {
 
 		OperatorType returnVal = OperatorType::None;
 
+// TODO make a map with operators, and just do return operatorMap[lexer.current]
 		switch (lexer.current()) {
 		case '=':
 			lexer.advance();

@@ -1,10 +1,10 @@
 /*
 
-	jScript
+	jsc
 	copyright (C) 2019 K. Stempinski
 
 	@filename:		main.cpp
-	@description:	
+	@description:	entry point of the script-runner utility
 
 */
 
@@ -49,21 +49,17 @@ int main(const int argc, const char* argv[]) {
 
 	}
 
-	std::string input = buffer.str();
-
-	Interpreter interpreter(std::cout);
-
-	//interpreter.setOutput(std::cout);
-	//interpreter.setInput(input);
+	Interpreter interpreter(buffer, std::cout);
 
 	try {
 	
-		interpreter.init(buffer);
+		interpreter.parse();
 	
 	} catch (const Exception& e) {
 
 		Console::writeLn("Parser exception at position " + std::to_string(e.pos()) + ": " + std::string(e.what()), Color::red);
 
+/*
 		size_t pos1 = input.find_last_of('\n', e.pos());
 		size_t pos2 = input.find_first_of('\n', e.pos());
 
@@ -80,11 +76,11 @@ int main(const int argc, const char* argv[]) {
 			p += (input[i] == '\t' ? '\t' : ' ');
 
 		Console::writeLn(p + "^");
-
+*/
 		return 1;
 
 	}
-std::cout << "running!";
+
 	try {
 
 		interpreter.run(true);

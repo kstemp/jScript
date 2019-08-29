@@ -55,7 +55,7 @@ struct Variable {
 	[[nodiscard]] T getData() const{
 
 		// static cast to the same type CAN introduce some overhead, so first check whether we hold T,
-		// (it's just faster than doing static_Cast to T from T)
+		// (it's just faster than doing static_cast to T from T)
 		if (std::holds_alternative<T>(data))
 			return std::get<T>(data);
 
@@ -64,7 +64,6 @@ struct Variable {
 				[](const auto& val) -> T {
 					return static_cast<T>(val);
 				},
-				//NOTE we need this -> T here, otherwise compiler is unhappy...
 				[](const std::monostate) -> T {
 					throw Exception("variable is undefined and holds no data");
 				}
@@ -75,17 +74,16 @@ struct Variable {
 
 	// data is (automatically!) set to std::monostate, since Variable is of "undefined" type
 	Variable() {
-#ifdef DEBUG
-		Console::writeInfoLn("created variable [ " + getTypeName() + " ]", "DEBUG", Color::yellow);
-#endif
+		// TODO check if we can move all the  is debug? checks to one place
+		if constexpr (Config::debug)
+			Console::writeInfoLn("created variable [ " + getTypeName() + " ]", "DEBUG", Color::yellow);
 	}
 
 	//TODO assert that T is numeric, or something like that
 	template <typename T>
 	explicit Variable(const T& val) : data(val){
-#ifdef DEBUG
-		Console::writeInfoLn("created variable [ " + getTypeName() + " ]", "DEBUG", Color::yellow);
-#endif
+		if constexpr (Config::debug)
+			Console::writeInfoLn("created variable [ " + getTypeName() + " ]", "DEBUG", Color::yellow);
 	}
 
 	Variable(const Variable& var) : data(var.data){}
@@ -146,9 +144,8 @@ struct Variable {
 	}
 
 	~Variable(){
-#ifdef DEBUG
-		Console::writeInfoLn("destroyed variable [ " + getTypeName() + " ]", "DEBUG", Color::yellow);
-#endif
+		if constexpr(Config::debug)
+			Console::writeInfoLn("destroyed variable [ " + getTypeName() + " ]", "DEBUG", Color::yellow);
 	}
 
 };

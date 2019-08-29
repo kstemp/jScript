@@ -1,4 +1,7 @@
 #pragma once
 
-#define DEBUG
-//#define NO_CONSOLE_COLORS
+namespace Config {
+
+    constexpr bool debug = true;
+
+}
