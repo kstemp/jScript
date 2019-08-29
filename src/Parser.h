@@ -1,17 +1,19 @@
 #pragma once
 
 #include <array>
-#include <stack>
-#include <iostream>
+#include <istream>
+#include "expression.h"
 
+#include "Node.h"
 #include "Lexer.h"
-#include "Operator.h"
 
 const std::array<std::string, 6> RESERVED = { "global", "func", "var", "return", "while", "if" };
 
 struct Parser {
 
 	Lexer& lexer;
+
+	ExpressionParser exprParser;
 
 	void checkReserved(const std::string& name) const {
 
@@ -28,16 +30,14 @@ struct Parser {
 
 	}
 
-	std::stack<OperatorValue> stack;
 
-	Parser(Lexer& lexer) : lexer(lexer) {}
+
+	Parser(Lexer& lexer) : lexer(lexer), exprParser(lexer) {}
 
 	Node* parseReturnStatement();
 	Node* parseFunctionDeclaration();
 	Node* parseWhileStatement();
-	Node* parseVariableOrFunction();
 	Node* parseVariableDeclaration();
-	Node* parseValueNode();
 
 	Node* getBlock() {
 
@@ -56,7 +56,7 @@ struct Parser {
 			return parseVariableDeclaration();
 
 		try {
-				Node* expr = parseExpression();
+				Node* expr = exprParser.parseExpression();
 				
 				lexer.eat(";");
 				return expr;
@@ -64,149 +64,12 @@ struct Parser {
 			} catch (Exception& e) // TODO exceptions
 			{
 
-				while (!stack.empty())
-					stack.pop();
+			
+
+				while (!exprParser.stack.empty())
+					exprParser.stack.pop();
 				throw e;
 			}
-
-	}
-
-	/*
-
-		OperatorType parseBinaryOperator()
-
-		@description:
-		@returns:
-
-	*/
-	OperatorType parseBinaryOperator() {
-
-		lexer.skipSpacesTabsNewlines();
-
-		OperatorType returnVal = OperatorType::None;
-
-// TODO make a map with operators, and just do return operatorMap[lexer.current]
-		switch (lexer.current()) {
-		case '=':
-			lexer.advance();
-			if (lexer.current() != '=')
-				return OperatorType::Assignment;
-			lexer.advance();
-			return OperatorType::Equal;
-		case '<':
-			lexer.advance();
-			return OperatorType::Smaller;
-		case '>':
-			lexer.advance();
-			return OperatorType::Greater;
-		case '+':
-			lexer.advance();
-			return OperatorType::Add;
-		case '-':
-			lexer.advance();
-			return OperatorType::Subtract;
-		case '/':
-			lexer.advance();
-			return OperatorType::Divide;
-		case '*':
-			lexer.advance();
-			return OperatorType::Multiply;
-		default:
-			return OperatorType::None;
-
-		}
-
-	}
-
-	/*
-
-		Node* parseValue()
-
-		@description: TODO
-
-	*/
-	Node* parseValue() {
-
-		lexer.skipSpacesTabsNewlines();
-
-		if (isdigit(lexer.current()))
-			return parseValueNode();
-
-		char p = lexer.current();
-		switch (p) {
-
-		case '(': {
-
-			lexer.advance();
-
-			Node* expr = parseExpression();
-
-
-			lexer.eat(")");
-			//if (!lexer.peek(")"))
-			//	throw Exception("expected ')' at the end of an expression", lexer.pos());
-
-			//lexer.advance();
-			return expr;
-		}
-
-		case '+':
-			lexer.advance();
-			return parseValue();
-
-		case '-':
-			lexer.advance();
-			return new UnaryNode([](Variable i) { return -i; }, parseValue());
-
-		default:
-
-			if (isalpha(lexer.current()))
-				return  parseVariableOrFunction();
-	
-			
-			throw Exception("failed to parse expression", lexer.pos());
-
-			
-		}
-	}
-
-	/*
-
-		Node* parseExpression()
-
-		@description: 
-
-	*/
-	Node* parseExpression() {
-
-		stack.push(OperatorValue(OperatorType::None, 0));
-
-		Node* value = parseValue();
-
-		while (!stack.empty()) {
-
-			OperatorType op(parseBinaryOperator());
-			while (PRECEDENCE.at(op) < PRECEDENCE.at(stack.top().op) || (PRECEDENCE.at(op) == PRECEDENCE.at(stack.top().op) && ASSOCIATIVITY.at(op) == Associativity::Left)) {
-
-				if (stack.top().isNull()) {
-					stack.pop();
-					return value;
-				}
-
-				value = getOperatorNode(stack.top().value, value, stack.top().op);
-				stack.pop();
-
-			}
-
-		
-			stack.push(OperatorValue(op, value));
-			
-			value = parseValue();
-
-		}
-
-		//TODO this is never hit, hmmm
-		return 0;
 
 	}
 

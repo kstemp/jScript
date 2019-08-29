@@ -21,7 +21,7 @@ Node* Parser::parseReturnStatement() {
 
 	lexer.eat("return ");
 
-	Node* expr = parseExpression();
+	auto expr = exprParser.parseExpression();
 
 	lexer.eat(";");
 
@@ -44,7 +44,7 @@ Node* Parser::parseWhileStatement() {
 
 	WhileNode* out = new WhileNode();
 
-	out->expr = parseExpression();
+	out->expr = exprParser.parseExpression();
 
 	lexer.eat(")");
 
@@ -124,81 +124,10 @@ Node* Parser::parseVariableDeclaration() {
 
 	lexer.eat("=");
 
-	Node* valueExpr = parseExpression();
+	auto valueExpr = exprParser.parseExpression();
 
 	lexer.eat(";");
 	
 	return new VarDeclNode(varName, valueExpr);
-
-}
-
-
-/*
-
-		Node* parseVariableOrFunction()
-
-		@description: TODO
-
-	*/
-Node* Parser::parseVariableOrFunction() {
-
-	std::string name;
-	while (isalpha(lexer.current())) {
-		name += lexer.current();
-		lexer.advance();
-	}
-
-	lexer.skipSpacesTabsNewlines();
-
-	if (!lexer.peek("("))
-		return new VariableNode(name);
-
-	lexer.eat("(");
-
-	FuncCallNode* out = new FuncCallNode(name);
-
-	while (!lexer.peek(")")) {
-		lexer.skipSpacesTabsNewlines();
-		out->arguments.push_back(parseExpression());
-		if (!lexer.peek(")"))
-			lexer.eat(",");
-	}
-
-	lexer.eat(")");
-
-	return out;
-}
-
-
-/*
-
-	Node* getNumber
-
-	@description:	creates a new ValueNode which represents a number (int or double) found
-					in the script
-	@returns:		pointer to new ValueNode
-
-*/
-Node* Parser::parseValueNode() {
-
-	std::string out;
-	while (isdigit(lexer.current())) {
-		out += lexer.current();
-		lexer.advance();
-	}
-
-	// if there's no dot, we return an integer 
-	if (lexer.current() != '.')
-		return new ValueNode(std::stoi(out));
-
-	lexer.advance();
-	out += '.';
-
-	while (isdigit(lexer.current())) {
-		out += lexer.current();
-		lexer.advance();
-	}
-
-	return new ValueNode(std::stod(out));
 
 }

@@ -148,6 +148,7 @@
     <ClInclude Include="src\Scope.h" />
     <ClInclude Include="src\Variable.h" />
     <ClInclude Include="src\RunVisitor.h" />
+    <ClInclude Include="src\expression.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Block.cpp" />
