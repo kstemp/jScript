@@ -53,9 +53,12 @@ int main(const int argc, const char* argv[]) {
 
 	Interpreter interpreter(std::cout);
 
+	//interpreter.setOutput(std::cout);
+	//interpreter.setInput(input);
+
 	try {
 	
-		interpreter.init(input);
+		interpreter.init(buffer);
 	
 	} catch (const Exception& e) {
 
@@ -81,7 +84,7 @@ int main(const int argc, const char* argv[]) {
 		return 1;
 
 	}
-
+std::cout << "running!";
 	try {
 
 		interpreter.run(true);

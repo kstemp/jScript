@@ -6,32 +6,33 @@
 
 class Lexer {
 
-	const std::string input;
+	std::istream& input;
 
-	size_t pos;
+//	size_t pos;
 
-	size_t lineNumber;
+//	size_t lineNumber;
 
 public:
 
 	[[nodiscard]] size_t gpos() const{
-		return pos;
+		return input.tellg();
 	}
 
-	[[nodiscard]] bool eof() const{
-		return pos >= input.size();
-		//return (input.peek() == EOF);
+	[[nodiscard]] bool eof() const {
+		//return pos >= input.size();
+		return (input.peek() == EOF);
 	}
 
 	void advance(){
-		pos++;
+		input.seekg(1, std::ios_base::cur);
 	}
 
 	[[nodiscard]] char current() const{
-		return input[pos];
+		return input.peek();
+		//return input[pos];
 	}
 
-	Lexer(const std::string& input) : input(input), pos(0){}
+	Lexer(std::istream& input) : input(input) {}
 
 	/*
 	
@@ -40,11 +41,13 @@ public:
 		@description:	^^
 	
 	*/
-	void skipSpacesTabsNewlines(){
+	void skipSpacesTabsNewlines(const bool skipNewlines = true){
 
-		while (isspace(input[pos]) || input[pos] == '\n' || input[pos] == '\t')	{
-			pos++;
-		};
+		while (isspace(input.peek()) || (skipNewlines && input.peek() == '\n') || input.peek() == '\t')
+			input.ignore();
+		//while (isspace(input[pos]) || input[pos] == '\n' || input[pos] == '\t')	{
+		//	pos++;
+		//};
 
 	}
 
@@ -58,17 +61,51 @@ public:
 	[[nodiscard]] std::string readString(){
 
 		std::string out;
-		while (isalnum(input[pos])){
-			out += input[pos];
-			pos++;
-		}
+		while (isalnum(input.peek()))//{
+			out += input.get();
+		//	pos++;
+		//}
 		return out;
 
 	}
 
+	//TODO merge these two into one
 	//TODO exceptions
 	void eat(const std::string& keyword){
 
+		//const std::streampos pos = input.tellg();
+
+		skipSpacesTabsNewlines(false);
+
+/*		std::string read;
+
+if (input >> read){
+
+	if (read != keyword){
+
+	}
+
+} else 
+{
+
+}
+*/
+		for (const char& c : keyword){
+		
+			
+				char p;
+				input.get(p); 	
+				if (input.eof())
+					throw Exception("EOF!"); 
+			
+				if (p != c){
+				std::cout << p << " while expected " << c << "\n";
+				throw Exception("expected '" + keyword, 0); 
+			
+			}
+		}
+
+/*
 		const size_t foundPos = input.find_first_not_of(" \t\n", pos);
 
 		//TODO comment
@@ -85,11 +122,38 @@ public:
 			pos = foundPos + keyword.length();
 		else
 			throw Exception("expected '" + keyword + "'", pos);
-
+*/
 	}
 
-	[[nodiscard]] bool peek(const std::string& keyword) const{
+	[[nodiscard]] bool peek(const std::string& keyword){
 
+
+		const std::streampos _pos_ = input.tellg();
+
+		skipSpacesTabsNewlines(false);
+
+char k;
+		for (const char& c : keyword){
+			if (input.eof())
+				{
+					input.seekg(_pos_, std::ios_base::beg);
+					return false;
+				} 
+			else {
+				input.get(k);
+				if (k != c){
+	input.seekg(_pos_, std::ios_base::beg);
+					return false;
+
+			}
+			}
+//				throw Exception("expected '" + keyword + "'", pos); 
+		}
+	input.seekg(_pos_, std::ios_base::beg);
+std::cout << "peeked " << keyword << "\n"; 
+		return true;
+
+/*
 		size_t foundPos = input.find_first_not_of(" \t\n", pos);
 
 		//TODO comment
@@ -100,7 +164,7 @@ public:
 		if (foundPos + keyword.length() > input.length())
 			return false;
 
-		return input.substr(foundPos, keyword.length()) == keyword;
+		return input.substr(foundPos, keyword.length()) == keyword;*/
 
 	}
 

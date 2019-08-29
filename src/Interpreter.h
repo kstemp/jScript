@@ -93,7 +93,7 @@ public:
 
 	}
 
-	void init(const std::string& input) {
+	void init(std::istream& input) {
 
 		// cleanup
 		for (auto& it : program)
