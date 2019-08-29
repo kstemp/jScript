@@ -13,7 +13,7 @@ struct Parser {
 	inline void checkReserved(const std::string& name) {
 
 		if (std::find(std::begin(RESERVED), std::end(RESERVED), name) != std::end(RESERVED))
-			throw Exception("'" + name + "' is a reserved keyword and cannot be used as a name", lexer.gpos());
+			throw Exception("'" + name + "' is a reserved keyword and cannot be used as a name", lexer.pos());
 
 	}
 
@@ -162,7 +162,7 @@ struct Parser {
 				return  parseVariableOrFunction();
 	
 			
-			throw Exception("failed to parse expression", lexer.gpos());
+			throw Exception("failed to parse expression", lexer.pos());
 
 			
 		}
