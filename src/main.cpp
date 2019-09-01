@@ -44,7 +44,7 @@ int main(const int argc, const char* argv[]) {
 
 	} catch (const std::ifstream::failure& e) {
 
-		Console::writeLn("Error: file '" + std::string(argv[1]) + "' cannot be opened (" + e.what() + ")");
+		Console::writeInfoLn("Error: file '" + std::string(argv[1]) + "' cannot be opened (" + e.what() + ")", "ERROR", Color::red);
 		return 1;
 
 	}
@@ -57,7 +57,7 @@ int main(const int argc, const char* argv[]) {
 	
 	} catch (const Exception& e) {
 
-		Console::writeLn("Parser exception at position " + std::to_string(e.pos()) + ": " + std::string(e.what()), Color::red);
+		Console::writeInfoLn("Parser exception at position " + std::to_string(e.pos()) + ": " + std::string(e.what()), "ERROR", Color::red);
 
 /*
 		size_t pos1 = input.find_last_of('\n', e.pos());
@@ -87,7 +87,7 @@ int main(const int argc, const char* argv[]) {
 	
 	} catch (const Exception& e) {
 
-		Console::writeLn("Error: " + std::string(e.what()), Color::red);
+		Console::writeInfoLn("Error: " + std::string(e.what()), "ERROR", Color::red);
 		return 1;
 
 	}

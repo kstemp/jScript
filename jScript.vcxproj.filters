@@ -10,8 +10,8 @@
     <Filter Include="Core">
       <UniqueIdentifier>{97d4e145-9f9f-42cc-b31d-987b58c21041}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interface">
-      <UniqueIdentifier>{9d9433fe-98c6-42c6-85e0-dd84ec360980}</UniqueIdentifier>
+    <Filter Include="Runner">
+      <UniqueIdentifier>{62417e8a-7a05-4e2f-93fb-f2100ca3b3eb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -36,10 +36,6 @@
     <ClInclude Include="src\Exception.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Console.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\Interpreter.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -49,6 +45,13 @@
     </ClInclude>
     <ClInclude Include="src\Resolver.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\expression.h" />
+    <ClInclude Include="src\Config.h">
+      <Filter>Runner</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Console.h">
+      <Filter>Runner</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -66,9 +69,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Interface</Filter>
-    </ClCompile>
     <ClCompile Include="src\Operator.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -83,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="src\Resolver.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Runner</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

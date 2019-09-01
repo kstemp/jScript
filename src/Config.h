@@ -2,6 +2,10 @@
 
 namespace Config {
 
-    constexpr bool debug = true;
+	#ifdef _DEBUG
+		constexpr bool debug = true;
+	#else
+		constexpr bool debug = false;
+	#endif
 
 }

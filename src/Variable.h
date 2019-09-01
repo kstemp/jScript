@@ -74,16 +74,13 @@ struct Variable {
 
 	// data is (automatically!) set to std::monostate, since Variable is of "undefined" type
 	Variable() {
-		// TODO check if we can move all the  is debug? checks to one place
-		if constexpr (Config::debug)
-			Console::writeInfoLn("created variable [ " + getTypeName() + " ]", "DEBUG", Color::yellow);
+		Console::writeDebug("created variable [ " + getTypeName() + " ]");
 	}
 
 	//TODO assert that T is numeric, or something like that
 	template <typename T>
 	explicit Variable(const T& val) : data(val){
-		if constexpr (Config::debug)
-			Console::writeInfoLn("created variable [ " + getTypeName() + " ]", "DEBUG", Color::yellow);
+		Console::writeDebug("created variable [ " + getTypeName() + " ]");
 	}
 
 	Variable(const Variable& var) : data(var.data){}
@@ -144,8 +141,7 @@ struct Variable {
 	}
 
 	~Variable(){
-		if constexpr(Config::debug)
-			Console::writeInfoLn("destroyed variable [ " + getTypeName() + " ]", "DEBUG", Color::yellow);
+		Console::writeDebug("destroyed variable [ " + getTypeName() + " ]");
 	}
 
 };

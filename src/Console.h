@@ -1,21 +1,26 @@
 /*
 
-	jScript
+	jsc scripting language
 	copyright (C) 2019 K. Stempinski
 
-	@filename:		Console.h
-	@description:
+	Console.h
+
+	<summary>
+	Mostly a wrapper for printing coloured output, and pretty things
+	like "[ TEXT ] some message goes here" etc.
+	</summary>
 
 */
-/*
-TODO
-* cross-platform compatibility - should use ASCII escape seqs on Linux and SetConsoleHandle/whatever on Windows
- */
 #pragma once
 
 #include <iostream>
-
 #include <array>
+#include <functional>
+
+#include "Config.h"
+
+const std::string reset = "\033[0m";
+const std::string open = "\033[";
 
 enum Color {
 	white = 0,
@@ -25,39 +30,27 @@ enum Color {
 	blue = 4
 };
 
-const std::string reset = "\033[0m";
-const std::string open = "\033[";
+const std::array<std::string, 5> colorStrings = { "", open + "31m", open + "92m", open + "93m", open + "94m"};
 
-const std::array<std::string, 5> colorStrings = {"", open + "31m", open + "92m", open + "93m", open + "94m"};
+struct Console final {
 
-class Console final {
-
-public:
-
-	static inline void write(const std::string& text, const Color color = Color::white){
-#ifdef NO_CONSOLE_COLORS
-		std::cout << text;
-#else
+	static void write(const std::string& text, const Color color = Color::white){
 		std::cout << colorStrings[color] << text << reset;
-#endif
 	}
 
 	static void writeLn(const std::string& text, const Color color = Color::white){
 		write(text + "\n", color);
 	}
 
-	static void writeInfoLn(const std::string text, const std::string& infoText, Color infoTextColor = Color::white){
+	static void writeInfoLn(const std::string text, const std::string& infoText, const Color infoTextColor = Color::white){
 		write("[ ");
 		write(infoText, infoTextColor);
-		write(" ] " + text + "\n");
+		writeLn(" ] " + text);
 	}
 
-	static void lineUp(){
-		std::cout << "\033[F";
-	}
-
-	static void lineStart(){
-		std::cout << "\r";
+	static void writeDebug(const std::string text) {
+		if constexpr (Config::debug)
+			writeInfoLn(text, "DEBUG", Color::yellow);
 	}
 
 };

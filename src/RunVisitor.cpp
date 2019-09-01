@@ -111,7 +111,7 @@ void RunVisitor::visit(FuncCallNode& funcCallNode){
 
 	auto it = methods.find(funcCallNode.name);
 
-	Console::writeInfoLn("calling func " + funcCallNode.name, "info");
+	Console::writeDebug("calling func " + funcCallNode.name);
 
 	if (it == methods.end())
 		throw Exception("method '" + funcCallNode.name + "' does not exist", -69);
