@@ -31,7 +31,7 @@ int main(const int argc, const char* argv[]) {
 	// no input files
 	if (argc == 1) {
 
-		Console::writeInfoLn("no input file specified", "ERROR", Color::red);
+		Console::writeError("no input file specified");
 		return 1;
 
 	}
@@ -44,7 +44,7 @@ int main(const int argc, const char* argv[]) {
 
 	} catch (const std::ifstream::failure& e) {
 
-		Console::writeInfoLn("Error: file '" + std::string(argv[1]) + "' cannot be opened (" + e.what() + ")", "ERROR", Color::red);
+		Console::writeError("Error: file '" + std::string(argv[1]) + "' cannot be opened (" + e.what() + ")");
 		return 1;
 
 	}
@@ -57,7 +57,7 @@ int main(const int argc, const char* argv[]) {
 	
 	} catch (const Exception& e) {
 
-		Console::writeInfoLn("Parser exception at position " + std::to_string(e.pos()) + ": " + std::string(e.what()), "ERROR", Color::red);
+		Console::writeError("Parser exception at position " + std::to_string(e.pos()) + ": " + std::string(e.what()));
 
 /*
 		size_t pos1 = input.find_last_of('\n', e.pos());
@@ -87,7 +87,7 @@ int main(const int argc, const char* argv[]) {
 	
 	} catch (const Exception& e) {
 
-		Console::writeInfoLn("Error: " + std::string(e.what()), "ERROR", Color::red);
+		Console::writeError("Error: " + std::string(e.what()));
 		return 1;
 
 	}

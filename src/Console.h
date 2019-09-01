@@ -42,15 +42,19 @@ struct Console final {
 		write(text + "\n", color);
 	}
 
-	static void writeInfoLn(const std::string text, const std::string& infoText, const Color infoTextColor = Color::white){
+	static void writeInfoLn(const std::string text, const std::string& infoText, const Color infoTextColor = Color::blue, const Color textColor = Color::white){
 		write("[ ");
 		write(infoText, infoTextColor);
-		writeLn(" ] " + text);
+		writeLn(" ] " + text, textColor);
 	}
 
 	static void writeDebug(const std::string text) {
 		if constexpr (Config::debug)
 			writeInfoLn(text, "DEBUG", Color::yellow);
+	}
+
+	static void writeError(const std::string text) {
+		writeInfoLn(text, "ERROR", Color::red);
 	}
 
 };
