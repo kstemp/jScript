@@ -37,6 +37,7 @@ int main(const int argc, const char* argv[]) {
 	}
 
 	// load input to memory
+	// TODO error handling doesn't seem to work here
 	std::stringstream buffer;
 	try {
 
