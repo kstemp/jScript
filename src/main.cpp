@@ -44,7 +44,7 @@ int main(const int argc, const char* argv[]) {
 
 	} catch (const std::ifstream::failure& e) {
 
-		Console::writeError("Error: file '" + std::string(argv[1]) + "' cannot be opened (" + e.what() + ")");
+		Console::writeError("file '" + std::string(argv[1]) + "' cannot be opened (" + e.what() + ")");
 		return 1;
 
 	}
@@ -87,7 +87,7 @@ int main(const int argc, const char* argv[]) {
 	
 	} catch (const Exception& e) {
 
-		Console::writeError("Error: " + std::string(e.what()));
+		Console::writeError(std::string(e.what()));
 		return 1;
 
 	}
