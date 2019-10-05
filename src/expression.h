@@ -6,11 +6,11 @@
 
 struct ExpressionParser {
 
-    Lexer& lexer;
+	Lexer& lexer;
 
-    ExpressionParser(Lexer& lexer) : lexer(lexer) {}
+	ExpressionParser(Lexer& lexer) : lexer(lexer) {}
 
-    std::stack<OperatorValue> stack;
+	std::stack<OperatorValue> stack;
 
 	OperatorType parseBinaryOperator() {
 
@@ -86,13 +86,14 @@ struct ExpressionParser {
 
 		default:
 
+			auto cur = lexer.current();
+
 			if (isalpha(lexer.current()))
 				return  parseVariableOrFunction();
-	
-			
+
 			throw Exception("failed to parse expression", lexer.pos());
 
-			
+
 		}
 	}
 
@@ -100,7 +101,7 @@ struct ExpressionParser {
 
 		Node* parseExpression()
 
-		@description: 
+		@description:
 
 	*/
 	Node* parseExpression() {
@@ -124,9 +125,9 @@ struct ExpressionParser {
 
 			}
 
-		
+
 			stack.push(OperatorValue(op, value));
-			
+
 			value = parseValue();
 
 		}
@@ -137,75 +138,75 @@ struct ExpressionParser {
 	}
 
 
-/*
+	/*
 
-		Node* parseVariableOrFunction()
+			Node* parseVariableOrFunction()
 
-		@description: TODO
+			@description: TODO
+
+		*/
+	Node* parseVariableOrFunction() {
+
+		std::string name;
+		while (isalpha(lexer.current())) {
+			name += lexer.current();
+			lexer.advance();
+		}
+
+		lexer.skipSpacesTabsNewlines();
+
+		if (!lexer.peek("("))
+			return new VariableNode(name);
+
+		lexer.eat("(");
+
+		FuncCallNode* out = new FuncCallNode(name);
+
+		while (!lexer.peek(")")) {
+			lexer.skipSpacesTabsNewlines();
+			out->arguments.push_back(parseExpression());
+			if (!lexer.peek(")"))
+				lexer.eat(",");
+		}
+
+		lexer.eat(")");
+
+		return out;
+	}
+
+
+	/*
+
+		Node* getNumber
+
+		@description:	creates a new ValueNode which represents a number (int or double) found
+						in the script
+		@returns:		pointer to new ValueNode
 
 	*/
-Node* parseVariableOrFunction() {
+	Node* parseValueNode() {
 
-	std::string name;
-	while (isalpha(lexer.current())) {
-		name += lexer.current();
+		std::string out;
+		while (isdigit(lexer.current())) {
+			out += lexer.current();
+			lexer.advance();
+		}
+
+		// if there's no dot, we return an integer 
+		if (lexer.current() != '.')
+			return new ValueNode(std::stoi(out));
+
 		lexer.advance();
+		out += '.';
+
+		while (isdigit(lexer.current())) {
+			out += lexer.current();
+			lexer.advance();
+		}
+
+		return new ValueNode(std::stod(out));
+
 	}
-
-	lexer.skipSpacesTabsNewlines();
-
-	if (!lexer.peek("("))
-		return new VariableNode(name);
-
-	lexer.eat("(");
-
-	FuncCallNode* out = new FuncCallNode(name);
-
-	while (!lexer.peek(")")) {
-		lexer.skipSpacesTabsNewlines();
-		out->arguments.push_back(parseExpression());
-		if (!lexer.peek(")"))
-			lexer.eat(",");
-	}
-
-	lexer.eat(")");
-
-	return out;
-}
-
-
-/*
-
-	Node* getNumber
-
-	@description:	creates a new ValueNode which represents a number (int or double) found
-					in the script
-	@returns:		pointer to new ValueNode
-
-*/
-Node* parseValueNode() {
-
-	std::string out;
-	while (isdigit(lexer.current())) {
-		out += lexer.current();
-		lexer.advance();
-	}
-
-	// if there's no dot, we return an integer 
-	if (lexer.current() != '.')
-		return new ValueNode(std::stoi(out));
-
-	lexer.advance();
-	out += '.';
-
-	while (isdigit(lexer.current())) {
-		out += lexer.current();
-		lexer.advance();
-	}
-
-	return new ValueNode(std::stod(out));
-
-}
 
 
 };

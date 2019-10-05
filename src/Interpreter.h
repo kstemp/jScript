@@ -48,18 +48,15 @@ public:
 
 		reset();
 
-		auto resolver = new Resolver;
-
-		//TODO destructors!!!!!!!!!
+		auto resolver = new Resolver();
 
 		try {
 
 			for (auto& it : program) 
 				it->accept(resolver);
 
-		}	catch (const Exception& e) {
+		}catch (const Exception& e) {
 
-			delete resolver;
 			throw e;
 
 		}

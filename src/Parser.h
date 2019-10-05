@@ -13,8 +13,6 @@ struct Parser {
 
 	Lexer& lexer;
 
-	ExpressionParser exprParser;
-
 	void checkReserved(const std::string& name) const {
 
 		if (std::find(std::begin(RESERVED), std::end(RESERVED), name) != std::end(RESERVED))
@@ -32,7 +30,7 @@ struct Parser {
 
 
 
-	Parser(Lexer& lexer) : lexer(lexer), exprParser(lexer) {}
+	Parser(Lexer& lexer) : lexer(lexer) {}
 
 	Node* parseReturnStatement();
 	Node* parseFunctionDeclaration();
@@ -56,18 +54,13 @@ struct Parser {
 			return parseVariableDeclaration();
 
 		try {
-				Node* expr = exprParser.parseExpression();
+			auto expr = std::make_unique<ExpressionParser>(this->lexer)->parseExpression();
 				
-				lexer.eat(";");
-				return expr;
+			lexer.eat(";");
 
-			} catch (Exception& e) // TODO exceptions
-			{
+			return expr;
 
-			
-
-				while (!exprParser.stack.empty())
-					exprParser.stack.pop();
+			} catch (Exception& e) {
 				throw e;
 			}
 

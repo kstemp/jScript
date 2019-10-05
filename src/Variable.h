@@ -30,29 +30,42 @@ struct Variable {
 
 	std::variant<std::monostate, int, double> data;
 
-	[[nodiscard]] std::string getTypeName() const{
+	// data is (automatically!) set to std::monostate, since Variable is of "undefined" type
+	Variable() {
+		Console::writeDebug("created variable [ " + getTypeName() + " ]");
+	}
+
+	//TODO assert that T is numeric, or something like that
+	template <typename T>
+	explicit Variable(const T& val) : data(val){
+		Console::writeDebug("created variable [ " + getTypeName() + " ]");
+	}
+
+	Variable(const Variable& var) : data(var.data){}
+
+	[[nodiscard]] std::string getTypeName() const {
 		return std::visit(
 			OverloadedVisitor{
 				[](const int&) -> std::string {
 					return "int";
 				},
-				//NOTE we need this -> T here, otherwise compiler is unhappy...
-				[](const double&) -> std::string {
-					return "double";
-				},
-				[](const std::monostate&) -> std::string {
-					return "undefined";
-				}
+			//NOTE we need this -> T here, otherwise compiler is unhappy...
+			[](const double&) -> std::string {
+				return "double";
+			},
+			[](const std::monostate&) -> std::string {
+				return "undefined";
+			}
 			},
 			data);
 	}
 
-	[[nodiscard]] bool isUndefined() const{
+	[[nodiscard]] bool isUndefined() const {
 		return data.index() == 0;
 	}
 
 	template <typename T>
-	[[nodiscard]] T getData() const{
+	[[nodiscard]] T getData() const {
 
 		// static cast to the same type CAN introduce some overhead, so first check whether we hold T,
 		// (it's just faster than doing static_cast to T from T)
@@ -71,19 +84,6 @@ struct Variable {
 			data);
 
 	}
-
-	// data is (automatically!) set to std::monostate, since Variable is of "undefined" type
-	Variable() {
-		Console::writeDebug("created variable [ " + getTypeName() + " ]");
-	}
-
-	//TODO assert that T is numeric, or something like that
-	template <typename T>
-	explicit Variable(const T& val) : data(val){
-		Console::writeDebug("created variable [ " + getTypeName() + " ]");
-	}
-
-	Variable(const Variable& var) : data(var.data){}
 
 	Variable& operator =(const Variable& var){
 

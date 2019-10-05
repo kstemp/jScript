@@ -29,19 +29,19 @@
 int main(const int argc, const char* argv[]) {
 
 	// no input files
-	if (argc == 1) {
+	/*if (argc == 1) {
 
 		Console::writeError("no input file specified");
 		return 1;
 
-	}
+	}*/
 
 	// load input to memory
 	// TODO error handling doesn't seem to work here
 	std::stringstream buffer;
 	try {
 
-		buffer << (std::ifstream(argv[1])).rdbuf();
+		buffer << (std::ifstream(/*argv[1]*/"code.j")).rdbuf();
 
 	} catch (const std::ifstream::failure& e) {
 

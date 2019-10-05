@@ -21,7 +21,7 @@ Node* Parser::parseReturnStatement() {
 
 	lexer.eat("return ");
 
-	auto expr = exprParser.parseExpression();
+	auto expr = std::make_unique<ExpressionParser>(this->lexer)->parseExpression();
 
 	lexer.eat(";");
 
@@ -44,7 +44,7 @@ Node* Parser::parseWhileStatement() {
 
 	WhileNode* out = new WhileNode();
 
-	out->expr = exprParser.parseExpression();
+	out->expr = std::make_unique<ExpressionParser>(this->lexer)->parseExpression();
 
 	lexer.eat(")");
 
@@ -124,7 +124,7 @@ Node* Parser::parseVariableDeclaration() {
 
 	lexer.eat("=");
 
-	auto valueExpr = exprParser.parseExpression();
+	auto valueExpr = std::make_unique<ExpressionParser>(this->lexer)->parseExpression();
 
 	lexer.eat(";");
 	
