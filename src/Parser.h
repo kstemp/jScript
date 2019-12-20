@@ -9,61 +9,75 @@
 
 const std::array<std::string, 6> RESERVED = { "global", "func", "var", "return", "while", "if" };
 
-struct Parser {
+class Parser {
 
-	Lexer& lexer;
+	size_t _pos = 0;
 
-	void checkReserved(const std::string& name) const {
+	void _checkReserved(const std::string& name) const {
 
 		if (std::find(std::begin(RESERVED), std::end(RESERVED), name) != std::end(RESERVED))
-			throw Exception("'" + name + "' is a reserved keyword and cannot be used as a name", lexer.pos());
+			throw Exception("'" + name + "' is a reserved keyword and cannot be used as a name", -69);
 
 	}
 
-	void parse(std::vector<Node*>& program) {
+	std::string _peekToken() {
+		return tokens[_pos];
+	}
 
-		//TODO we shoud not be using eof here
-		while (!lexer.eof())
-			program.push_back(getBlock());
+	void _eatToken(std::string expected) {
+
+		if (tokens[_pos] != expected)
+			throw Exception("expected " + expected + " instead of " + tokens[_pos]);
+
+		_pos++;
+		
+	}
+
+	Node* getBlock() {
+
+		auto token = _peekToken();
+
+		if (token == "func")
+			return parseFunctionDeclaration();
+
+		if (token == "return ")
+			return parseReturnStatement();
+
+		if (token == "while")
+			return parseWhileStatement();
+
+		if (token == "var ")
+			return parseVariableDeclaration();
+
+		auto expr = parseExpression();
+
+		_eatToken(";");
+
+		return expr;
 
 	}
 
+public:
 
+	std::vector<std::string>& tokens;
 
-	Parser(Lexer& lexer) : lexer(lexer) {}
+	Parser(std::vector<std::string>& tokens) : tokens(tokens) {}
+
+	std::vector<Node*> parse() {
+		
+		_pos = 0;
+
+		std::vector<Node*> out;
+		while (pos < tokens.size())
+			out.push_back(getBlock());
+
+		return out;
+
+	}
 
 	Node* parseReturnStatement();
 	Node* parseFunctionDeclaration();
 	Node* parseWhileStatement();
 	Node* parseVariableDeclaration();
-
-	Node* getBlock() {
-
-		lexer.skipSpacesTabsNewlines();
-
-		if (lexer.peek("func "))
-			return parseFunctionDeclaration();
-		
-		if (lexer.peek("return ")) 
-			return parseReturnStatement();
-		
-		if (lexer.peek("while ")) 
-			return parseWhileStatement();
-		
-		if (lexer.peek("var ")) 
-			return parseVariableDeclaration();
-
-		try {
-			auto expr = std::make_unique<ExpressionParser>(this->lexer)->parseExpression();
-				
-			lexer.eat(";");
-
-			return expr;
-
-			} catch (Exception& e) {
-				throw e;
-			}
-
-	}
 
 };

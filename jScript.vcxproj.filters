@@ -4,9 +4,6 @@
     <Filter Include="Documentation">
       <UniqueIdentifier>{8a8d52bf-b559-47d5-963e-29d2d721b9a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tests">
-      <UniqueIdentifier>{d85f7a4d-f099-46c8-a0d2-266d7ec9f395}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{97d4e145-9f9f-42cc-b31d-987b58c21041}</UniqueIdentifier>
     </Filter>
@@ -46,9 +43,6 @@
     <ClInclude Include="src\Resolver.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Config.h">
-      <Filter>Runner</Filter>
-    </ClInclude>
     <ClInclude Include="src\Console.h">
       <Filter>Runner</Filter>
     </ClInclude>
@@ -66,9 +60,6 @@
     </None>
     <None Include="TODO.md">
       <Filter>Documentation</Filter>
-    </None>
-    <None Include="code.j">
-      <Filter>Tests</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

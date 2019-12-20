@@ -140,7 +140,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\Console.h" />
     <ClInclude Include="src\Exception.h" />
     <ClInclude Include="src\Interpreter.h" />
@@ -165,7 +164,6 @@
     <ClCompile Include="src\RunVisitor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="code.j" />
     <None Include="README.md" />
     <None Include="TODO.md" />
   </ItemGroup>

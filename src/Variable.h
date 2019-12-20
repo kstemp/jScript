@@ -16,7 +16,6 @@
 
 #include "Exception.h"
 #include "Console.h"
-#include "Config.h"
 
 template <class... Ts>
 struct OverloadedVisitor : Ts... {
@@ -151,13 +150,13 @@ Variable getVar(const Variable& v1, const Variable& v2, OP op){
 
 	return std::visit(OverloadedVisitor{
 		[](std::monostate, std::monostate) -> Variable {
-			throw Exception("undefined argument passed to numeric binary operator");
+			throw Exception(ExceptionType::undefinedArgToBinOp);
 		},
 		[](auto, std::monostate) -> Variable {
-			throw Exception("undefined argument passed to numeric binary operator");
+			throw Exception(ExceptionType::undefinedArgToBinOp);
 		},
 		[](std::monostate, auto) -> Variable {
-			throw Exception("undefined argument passed to numeric binary operator");
+			throw Exception(ExceptionType::undefinedArgToBinOp);
 		},
 		[op](const auto a, const auto b) -> Variable {
 			return Variable(op(a, b));

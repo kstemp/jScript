@@ -17,8 +17,6 @@
 #include <array>
 #include <functional>
 
-#include "Config.h"
-
 const std::string reset = "\033[0m";
 const std::string open = "\033[";
 
@@ -50,8 +48,7 @@ struct Console final {
 	}
 
 	static void writeDebug(const std::string text) {
-		if constexpr (Config::debug)
-			writeInfoLn(text, "DEBUG", Color::yellow);
+		writeInfoLn(text, "DEBUG", Color::yellow);
 	}
 
 	static void writeError(const std::string text) {

@@ -22,19 +22,15 @@
 
 std::deque<Scope> scopes;
 
-using Program = std::vector<Node*>;
-
 std::unordered_map<std::string, FunctionNode*> methods; 
 
 class Interpreter {
 
-	std::istream& _in;
-	std::ostream& _out;
-
+	std::vector<Node*>& program;
 
 public:
 
-	Program program;
+	Interpreter(std::vector<Node*>& program) : program(program) {}
 	
 	void reset() {
 
@@ -63,7 +59,7 @@ public:
 
 	}
 
-	void run(const bool printNumericalResults = false){
+	void run(){
 
 		resolveVariables();
 
@@ -78,10 +74,9 @@ public:
 			for (auto& it : program) {
 
 				it->accept(visitor);
-				
-				if (printNumericalResults)
-					if (!visitor->result.isUndefined())
-						_out << visitor->result;
+
+				if (!visitor->result.isUndefined())
+					std::cout << visitor->result;
 				
 			}
 
@@ -93,30 +88,5 @@ public:
 		}
 
 	}
-
-	void parse() {
-
-		// cleanup
-		for (auto& it : program)
-			delete it;
-
-		program.clear();
-
-		Lexer lexer(_in);
-		Parser parser(lexer);
-
-		try {
-
-			parser.parse(program);
-
-		} catch (const Exception& e) {
-
-			throw e;
-
-		}
-	
-	}
-
-	Interpreter(std::istream& in, std::ostream& out) : _in(in), _out(out) {}
 
 };

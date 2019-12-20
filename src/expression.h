@@ -14,7 +14,7 @@ struct ExpressionParser {
 
 	OperatorType parseBinaryOperator() {
 
-		lexer.skipSpacesTabsNewlines();
+	/*	lexer.skipSpacesTabsNewlines();
 
 		OperatorType returnVal = OperatorType::None;
 
@@ -48,12 +48,17 @@ struct ExpressionParser {
 			return OperatorType::None;
 
 		}
-
+		*/
+		return OperatorType::None;
+	//	return new ValueNode(9);
+	
 	}
+
+
 
 	Node* parseValue() {
 
-		lexer.skipSpacesTabsNewlines();
+	/*	lexer.skipSpacesTabsNewlines();
 
 		if (isdigit(lexer.current()))
 			return parseValueNode();
@@ -94,7 +99,8 @@ struct ExpressionParser {
 			throw Exception("failed to parse expression", lexer.pos());
 
 
-		}
+		}*/
+		return new ValueNode(9);
 	}
 
 	/*
@@ -147,7 +153,7 @@ struct ExpressionParser {
 		*/
 	Node* parseVariableOrFunction() {
 
-		std::string name;
+	/*	std::string name;
 		while (isalpha(lexer.current())) {
 			name += lexer.current();
 			lexer.advance();
@@ -171,7 +177,7 @@ struct ExpressionParser {
 
 		lexer.eat(")");
 
-		return out;
+		return out;*/
 	}
 
 
@@ -186,7 +192,7 @@ struct ExpressionParser {
 	*/
 	Node* parseValueNode() {
 
-		std::string out;
+		/*std::string out;
 		while (isdigit(lexer.current())) {
 			out += lexer.current();
 			lexer.advance();
@@ -204,7 +210,7 @@ struct ExpressionParser {
 			lexer.advance();
 		}
 
-		return new ValueNode(std::stod(out));
+		return new ValueNode(std::stod(out));*/
 
 	}
 

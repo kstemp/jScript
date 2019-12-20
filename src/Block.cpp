@@ -19,13 +19,15 @@
 */
 Node* Parser::parseReturnStatement() {
 
+	/*
 	lexer.eat("return ");
 
 	auto expr = std::make_unique<ExpressionParser>(this->lexer)->parseExpression();
 
 	lexer.eat(";");
 
-	return new ReturnNode(expr);
+	return new ReturnNode(expr);*/
+	return new ValueNode(6);
 
 }
 
@@ -38,7 +40,7 @@ Node* Parser::parseReturnStatement() {
 */
 Node* Parser::parseWhileStatement() {
 
-	lexer.eat("while ");
+	/*lexer.eat("while ");
 
 	lexer.eat("(");
 
@@ -55,7 +57,8 @@ Node* Parser::parseWhileStatement() {
 
 	lexer.eat("}");
 
-	return out;
+	return out;*/
+	return new ValueNode(89);
 
 }
 
@@ -68,7 +71,7 @@ Node* Parser::parseWhileStatement() {
 */
 Node* Parser::parseFunctionDeclaration() {
 
-	lexer.eat("func ");
+/*	lexer.eat("func ");
 
 	const std::string functionName = lexer.readString();
 
@@ -96,7 +99,8 @@ Node* Parser::parseFunctionDeclaration() {
 	lexer.eat("}");
 
 	return out;
-
+	*/
+	return new ValueNode(9);
 }
 
 /*
@@ -112,7 +116,7 @@ Node* Parser::parseFunctionDeclaration() {
 */
 Node* Parser::parseVariableDeclaration() {
 
-	lexer.eat("var ");
+	/*lexer.eat("var ");
 
 	std::string varName = lexer.readString();
 	checkReserved(varName);
@@ -128,6 +132,7 @@ Node* Parser::parseVariableDeclaration() {
 
 	lexer.eat(";");
 	
-	return new VarDeclNode(varName, valueExpr);
+	return new VarDeclNode(varName, valueExpr);*/
+	return new ValueNode(9);
 
 }

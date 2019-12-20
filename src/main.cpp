@@ -17,79 +17,51 @@
 #include "Exception.h"
 #include "Interpreter.h"
 
-/*
-
-	int main(int argc, char *argv[])
-
-	@description:	application entry point. 
-					Collects arguments from command line, 
-					reads the specified source, parses it and executes the script	
-
-*/
 int main(const int argc, const char* argv[]) {
 
-	// no input files
-	/*if (argc == 1) {
+	while (1) {
 
-		Console::writeError("no input file specified");
-		return 1;
+		std::cout << "> ";
 
-	}*/
+		std::string input;
+		std::getline(std::cin, input);
 
-	// load input to memory
-	// TODO error handling doesn't seem to work here
-	std::stringstream buffer;
-	try {
+		std::stringstream buffer(input);
 
-		buffer << (std::ifstream(/*argv[1]*/"code.j")).rdbuf();
+		std::vector<Node*> program;
 
-	} catch (const std::ifstream::failure& e) {
+		try {
 
-		Console::writeError("file '" + std::string(argv[1]) + "' cannot be opened (" + e.what() + ")");
-		return 1;
+			Lexer lexer(buffer);
 
-	}
+			auto tokens = lexer.tokenize();
 
-	Interpreter interpreter(buffer, std::cout);
+			for (auto& t : tokens)
+				std::cout << t << "\n";
 
-	try {
-	
-		interpreter.parse();
-	
-	} catch (const Exception& e) {
+			Parser parser(tokens);
+			program = parser.parse();
 
-		Console::writeError("Parser exception at position " + std::to_string(e.pos()) + ": " + std::string(e.what()));
+		}
+		catch (const Exception & e) {
 
-/*
-		size_t pos1 = input.find_last_of('\n', e.pos());
-		size_t pos2 = input.find_first_of('\n', e.pos());
+			Console::writeError("Parser exception at position " + std::to_string(e.pos()) + ": " + std::string(e.what()));
+			return 1;
 
-		if (pos1 == std::string::npos)
-			pos1 = 0;
+		}
 
-		if (pos2 == std::string::npos)
-			pos2 = input.length();
+		try {
 
-		Console::writeLn(input.substr(pos1, pos2 - pos1));
+			Interpreter interpreter(program);
+			interpreter.run();
 
-		std::string p = "";
-		for (size_t i = pos1; i < e.pos() - 1; i++)
-			p += (input[i] == '\t' ? '\t' : ' ');
+		}
+		catch (const Exception & e) {
 
-		Console::writeLn(p + "^");
-*/
-		return 1;
+			Console::writeError(std::string(e.what()));
+			return 1;
 
-	}
-
-	try {
-
-		interpreter.run(true);
-	
-	} catch (const Exception& e) {
-
-		Console::writeError(std::string(e.what()));
-		return 1;
+		}
 
 	}
 
