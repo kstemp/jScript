@@ -1,11 +1,8 @@
 #pragma once
 
 #include <array>
-#include <istream>
-#include "expression.h"
 
 #include "Node.h"
-#include "Lexer.h"
 
 const std::array<std::string, 6> RESERVED = { "global", "func", "var", "return", "while", "if" };
 
@@ -33,23 +30,113 @@ class Parser {
 		
 	}
 
-	Node* getBlock() {
+	Node* _parseReturnStatement() {
+		
+		_eatToken("return");
+		auto expr = _parseExpression();
+		_eatToken(";");
+
+		return new ReturnNode(expr);
+
+	}
+
+	Node* _parseWhileStatement() {
+
+		_eatToken("while");
+		_eatToken("(");
+
+		WhileNode* out = new WhileNode();
+		out->expr = _parseExpression();
+
+		_eatToken(")");
+		_eatToken("{");
+
+		while (_peekToken() != "}")
+			out->body.push_back(_getBlock());
+
+		_eatToken("}");
+
+		return out;
+
+	}
+
+	Node* _parseFunctionDeclaration() {
+
+		_eatToken("func");
+
+		const std::string functionName = lexer.readString();
+		_checkReserved(functionName);
+
+		FunctionNode* out = new FunctionNode(functionName);
+
+		_eatToken("(");
+		while (_peekToken() != ")") {
+			out->parameters.push_back(lexer.readString());
+			if (_peekToken() != ")")
+				_eatToken(",");
+		}
+
+		_eatToken(")");
+		_eatToken("{");
+
+		while (_peekToken() != "}")
+			out->body.push_back(_getBlock());
+
+		_eatToken("}");
+
+		return out;
+
+	}
+
+	Node* _parseVariableDeclaration() {
+
+		_eatToken("var");
+
+		std::string varName = lexer.readString();
+		_checkReserved(varName);
+
+		if (!lexer.peek("=")) {
+			_eatToken(";");
+			return new VarDeclNode(varName);
+		}
+
+		_eatToken("=");
+		auto valueExpr = _parseExpression();
+		_eatToken(";");
+
+		return new VarDeclNode(varName, valueExpr);
+
+	}
+
+	Node* _parseExpressionInternal() {
+
+	}
+
+	Node* _parsePrimaryExpression() {
+
+	}
+
+	Node* _parseExpression() {
+		return _parseExpressionInternal(_parsePrimaryExpression(), 0)
+	}
+
+	Node* _getBlock() {
 
 		auto token = _peekToken();
 
 		if (token == "func")
-			return parseFunctionDeclaration();
+			return _parseFunctionDeclaration();
 
-		if (token == "return ")
-			return parseReturnStatement();
+		if (token == "return")
+			return _parseReturnStatement();
 
 		if (token == "while")
-			return parseWhileStatement();
+			return _parseWhileStatement();
 
-		if (token == "var ")
-			return parseVariableDeclaration();
+		if (token == "var")
+			return _parseVariableDeclaration();
 
-		auto expr = parseExpression();
+		auto expr = _parseExpression();
 
 		_eatToken(";");
 
@@ -68,16 +155,11 @@ public:
 		_pos = 0;
 
 		std::vector<Node*> out;
-		while (pos < tokens.size())
-			out.push_back(getBlock());
+		while (_pos < tokens.size())
+			out.push_back(_getBlock());
 
 		return out;
 
 	}
-
-	Node* parseReturnStatement();
-	Node* parseFunctionDeclaration();
-	Node* parseWhileStatement();
-	Node* parseVariableDeclaration();
 
 };

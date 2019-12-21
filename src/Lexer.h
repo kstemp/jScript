@@ -2,8 +2,6 @@
 
 #include <string>
 
-#include "expression.h"
-
 #include "Exception.h"
 
 class Lexer {
@@ -39,7 +37,6 @@ class Lexer {
 		return out;
 
 	}
-
 
 	bool _isOperator(char c) {
 

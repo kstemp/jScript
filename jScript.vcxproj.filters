@@ -10,7 +10,7 @@
     <Filter Include="Runner">
       <UniqueIdentifier>{62417e8a-7a05-4e2f-93fb-f2100ca3b3eb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Expression">
+    <Filter Include="OLD">
       <UniqueIdentifier>{7ea14cfc-cf16-4443-bd08-611119042650}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -46,12 +46,12 @@
     <ClInclude Include="src\Console.h">
       <Filter>Runner</Filter>
     </ClInclude>
-    <ClInclude Include="src\Operator.h">
-      <Filter>Expression</Filter>
-    </ClInclude>
     <ClInclude Include="src\Visitor.h" />
-    <ClInclude Include="src\expression.h">
-      <Filter>Expression</Filter>
+    <ClInclude Include="src\expression.h.old">
+      <Filter>OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Operator.h.old">
+      <Filter>OLD</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -63,9 +63,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Block.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="src\Node.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -78,8 +75,8 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Runner</Filter>
     </ClCompile>
-    <ClCompile Include="src\Operator.cpp">
-      <Filter>Expression</Filter>
+    <ClCompile Include="src\Operator.cpp.old">
+      <Filter>OLD</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
