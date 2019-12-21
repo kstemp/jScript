@@ -146,19 +146,16 @@
     <ClInclude Include="src\Lexer.h" />
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\NodeVisitor.h" />
-    <ClInclude Include="src\Operator.h.old" />
     <ClInclude Include="src\Parser.h" />
     <ClInclude Include="src\Resolver.h" />
     <ClInclude Include="src\Scope.h" />
     <ClInclude Include="src\Variable.h" />
     <ClInclude Include="src\RunVisitor.h" />
-    <ClInclude Include="src\expression.h.old" />
     <ClInclude Include="src\Visitor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Node.cpp" />
-    <ClCompile Include="src\Operator.cpp.old" />
     <ClCompile Include="src\Resolver.cpp" />
     <ClCompile Include="src\RunVisitor.cpp" />
   </ItemGroup>
