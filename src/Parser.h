@@ -30,6 +30,19 @@ class Parser {
 		
 	}
 
+	std::string _eatString() {
+
+		// TODO check if has length 1
+		// TODO this is not really readString, more like readAllowedName...
+
+		if (!isalpha(tokens[_pos].at(0)))
+			throw Exception("expected string not starting with whatever this one starts with");
+
+		_pos++;
+		return tokens[_pos - 1];
+
+	}
+
 	Node* _parseReturnStatement() {
 		
 		_eatToken("return");
@@ -64,14 +77,14 @@ class Parser {
 
 		_eatToken("func");
 
-		const std::string functionName = lexer.readString();
+		const std::string functionName = _eatString();
 		_checkReserved(functionName);
 
 		FunctionNode* out = new FunctionNode(functionName);
 
 		_eatToken("(");
 		while (_peekToken() != ")") {
-			out->parameters.push_back(lexer.readString());
+			out->parameters.push_back(_eatString());
 			if (_peekToken() != ")")
 				_eatToken(",");
 		}
@@ -92,10 +105,10 @@ class Parser {
 
 		_eatToken("var");
 
-		std::string varName = lexer.readString();
+		std::string varName = _eatString();
 		_checkReserved(varName);
 
-		if (!lexer.peek("=")) {
+		if (_peekToken() != "=") {
 			_eatToken(";");
 			return new VarDeclNode(varName);
 		}
@@ -117,7 +130,7 @@ class Parser {
 	}
 
 	Node* _parseExpression() {
-		return _parseExpressionInternal(_parsePrimaryExpression(), 0)
+		return _parseExpressionInternal(_parsePrimaryExpression(), 0);
 	}
 
 	Node* _getBlock() {
