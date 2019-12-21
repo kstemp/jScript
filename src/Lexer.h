@@ -60,6 +60,7 @@ public:
 
 	std::vector<std::string> tokenize() {
 
+		// TODO spaces at the end of input STILL CAUSE AN ERROR!!!!
 		std::vector<std::string> out;
 		while (!_eof()) {
 

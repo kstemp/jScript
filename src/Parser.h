@@ -121,12 +121,12 @@ class Parser {
 
 	}
 
-	Node* _parseExpressionInternal() {
-
+	Node* _parseExpressionInternal(Node* lhs, int minPrecedence) {
+		return new ValueNode(9);
 	}
 
 	Node* _parsePrimaryExpression() {
-
+		return new ValueNode(9);
 	}
 
 	Node* _parseExpression() {
