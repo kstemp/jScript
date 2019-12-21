@@ -49,6 +49,7 @@ class Lexer {
 			|| c == '('
 			|| c == ')'
 			|| c == ';'
+			|| c == ','
 			); // TODO add all
 
 	}

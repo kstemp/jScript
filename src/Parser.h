@@ -13,18 +13,19 @@ class Parser {
 	void _checkReserved(const std::string& name) const {
 
 		if (std::find(std::begin(RESERVED), std::end(RESERVED), name) != std::end(RESERVED))
-			throw Exception("'" + name + "' is a reserved keyword and cannot be used as a name", -69);
+			throw Exception("'" + name + "' is a reserved keyword and cannot be used as a name", _pos);
 
 	}
 
 	std::string _peekToken() {
-		return tokens[_pos];
+		// TODO EMPTY_TOKEN type
+		return _pos < tokens.size() ? tokens[_pos] : "EMPTY_TOKEN";
 	}
 
 	void _eatToken(std::string expected) {
 
 		if (tokens[_pos] != expected)
-			throw Exception("expected " + expected + " instead of " + tokens[_pos]);
+			throw Exception("expected " + expected + " instead of " + tokens[_pos], _pos);
 
 		_pos++;
 		
@@ -36,7 +37,7 @@ class Parser {
 		// TODO this is not really readString, more like readAllowedName...
 
 		if (!isalpha(tokens[_pos].at(0)))
-			throw Exception("expected string not starting with whatever this one starts with");
+			throw Exception("expected string not starting with whatever this one starts with", _pos);
 
 		_pos++;
 		return tokens[_pos - 1];
@@ -121,12 +122,46 @@ class Parser {
 
 	}
 
+	bool _isBinaryOperator(std::string token) {
+		return token == "+" || token == "*";
+	}
+
+	std::unordered_map<std::string, int> PREC = {
+		{ "+",  1 },
+		{ "*",  1 }
+	};
+
 	Node* _parseExpressionInternal(Node* lhs, int minPrecedence) {
-		return new ValueNode(9);
+		std::string lookahead = _peekToken();
+
+		while (_isBinaryOperator(lookahead) && PREC[lookahead] >= minPrecedence) {
+
+			std::string op = lookahead;
+
+			_eatToken(lookahead);
+
+			Node* rhs = _parsePrimaryExpression();
+
+			lookahead = _peekToken();
+
+			while (_isBinaryOperator(lookahead) && PREC[lookahead] > PREC[op]) {
+
+				rhs = _parseExpressionInternal(rhs, PREC[lookahead]);
+
+				lookahead = _peekToken();
+
+			}
+
+			lhs = new BinOpNode([](Variable b, Variable c) { return (b + c);  }, lhs, rhs);
+
+		}
+
+		return lhs;
 	}
 
 	Node* _parsePrimaryExpression() {
-		return new ValueNode(9);
+		_eatToken("2");
+		return new ValueNode(2);
 	}
 
 	Node* _parseExpression() {
